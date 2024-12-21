@@ -3,6 +3,7 @@
 	import { Action } from '$lib/types/Action';
 	import type { Player } from '$lib/types/Player';
 	import Card from '../Card.svelte';
+	import PlayerHand from './PlayerHand.svelte';
 
 	type Props = {
 		player: Player;
@@ -27,25 +28,8 @@
 
 <div class="player-panel {position} absolute p-4">
 	<strong>{player.name ?? `Player ${playerIndex + 1}`}</strong>
-	<div class="flex gap-1">
-		{#each round?.hands?.[playerIndex] ?? [] as cardInHand}
-			{#if !cardInHand.isPlayed}
-				<Card
-					card={cardInHand.card}
-					orientation="front"
-					variant={round.canCardBePlayed(playerIndex, cardInHand.card) ? 'default' : 'disabled'}
-					onclick={() => {
-						// if (playerIndex === playerNumber) {
-						// if (action === Action.SwapCard) {
-						// 	round.swapCard(playerIndex, cardInHand.card);
-						// } else if (action === Action.PlayCard) {
-						// 	round.playCard(playerIndex, cardInHand.card);
-						// }
-						// }
-					}}
-				/>
-			{/if}
-		{/each}
+	<div class="hand-container">
+		<PlayerHand {round} {position} {playerIndex} />
 	</div>
 </div>
 
@@ -56,9 +40,13 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			width: 60%;
+			width: min(50vh, 50vw);
 			margin-inline: auto;
 			border-bottom: 0;
+			.hand-container {
+				scale: 125%;
+				transform: translateY(-20px);
+			}
 		}
 		&.left {
 			left: 0;
