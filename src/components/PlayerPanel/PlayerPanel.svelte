@@ -4,6 +4,7 @@
 	import type { Player } from '$lib/types/Player';
 	import Card from '../Card.svelte';
 	import PlayerHand from './PlayerHand.svelte';
+	import PlayerInfo from './PlayerInfo.svelte';
 
 	type Props = {
 		player: Player;
@@ -15,6 +16,8 @@
 	const { player, mainPlayer, game }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const playerIndex = $derived(game.players.findIndex((p) => p.id === player.id));
+	const currentPlayer = $derived(game.getCurrentPlayer());
+	const dealer = $derived(game.getCurrentDealer());
 	const position: Position = $derived.by(() => {
 		const mainPlayerIndex = game.players.findIndex((p) => p.id === mainPlayer);
 		const playerByMain = [
@@ -27,7 +30,7 @@
 </script>
 
 <div class="player-panel {position} absolute p-4">
-	<strong>{player.name ?? `Player ${playerIndex + 1}`}</strong>
+	<div class="info-container"><PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} /></div>
 	<div class="hand-container">
 		<PlayerHand {round} {position} {playerIndex} />
 	</div>

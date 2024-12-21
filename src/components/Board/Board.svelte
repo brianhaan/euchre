@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
 	import { RoundStatus } from '$lib/types/Round';
+	import Bidding from './Bidding.svelte';
+	import Trick from './Trick.svelte';
 
 	type Props = {
 		game: GameState;
@@ -12,7 +14,11 @@
 
 <div class="board">
 	{#if !round || round.status === RoundStatus.Complete}
-		<button onclick={() => game.startNewRound()}>Start New Round</button>
+		<button onclick={() => game.startNewRound()} class="text-xl">Start New Round</button>
+	{:else if round.status === RoundStatus.Bidding}
+		<Bidding {round} />
+	{:else if round.status === RoundStatus.Tricks}
+		<Trick />
 	{/if}
 </div>
 

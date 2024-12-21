@@ -5,7 +5,7 @@
 	type Props = {
 		card: Card;
 		variant?: Variant;
-		orientation: 'front' | 'back';
+		orientation?: 'front' | 'back';
 		onclick?: () => void;
 	};
 
@@ -18,7 +18,7 @@
 <button
 	class="card {variant === 'disabled'
 		? 'disabled'
-		: ''} suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()} {typeof onlick ===
+		: ''} suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()} {typeof onclick ===
 	'undefined'
 		? 'no-click'
 		: ''}"

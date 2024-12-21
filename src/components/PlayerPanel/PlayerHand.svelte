@@ -32,7 +32,7 @@
 				style="transform: rotate({(cardIndex + 0.5 - numCards / 2) * 8}deg) translateY({Math.pow(
 					Math.abs(cardIndex + 0.5 - numCards / 2) * 3,
 					2.12
-				)}px) translateX({(numCards / 2 - cardIndex - 0.5) * 20}px)"
+				)}px) translateX({(numCards / 2 - cardIndex - 0.5) * 20}px);"
 			>
 				<Card
 					card={cardInHand.card}
@@ -75,7 +75,7 @@
 		transform-origin: bottom center;
 		&:hover {
 			scale: 1.1;
-			z-index: 2;
+			z-index: 200;
 			transition: all 0.1s;
 		}
 	}
