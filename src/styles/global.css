@@ -1,0 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Walter+Turncoat);
+
+:root {
+	--bg-default: #3e3410;
+	--fg-default: #e8e8e8;
+	--bg-board: #008101;
+	--bg-card: #ffffff;
+}
+
+body {
+	font-family: 'Walter Turncoat', cursive;
+	color: var(--fg-default);
+	background: var(--bg-default);
+}

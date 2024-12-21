@@ -4,7 +4,7 @@ import type { Player } from './Player';
 export type Game = {
 	id: number;
 	scoreToWin: number;
-	players: [Player | undefined, Player | undefined, Player | undefined, Player | undefined];
+	players: [Player, Player, Player, Player];
 	initialDealer: number;
 	rounds: RoundState[];
 };

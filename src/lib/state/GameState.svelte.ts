@@ -10,7 +10,7 @@ export class GameState implements Game {
 		{ id: 0, name: 'Alice' },
 		{ id: 1, name: 'Bob' },
 		{ id: 2, name: 'Charles' },
-		{ id: 3, name: 'Delores' }
+		{ id: 3 }
 	] as Game['players']);
 	initialDealer = Math.floor(Math.random() * 4);
 	rounds = $state([]) as RoundState[];

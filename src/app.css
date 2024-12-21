@@ -2,56 +2,5 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-*, *: : before, *: : after {
-	box-sizing: border-box;
-}
-
-* {
-	margin: 0;
-}
-
-html,
-body {
-	height: 100%;
-	padding: 0;
-	font-size: 16px;
-}
-
-body {
-	-webkit-font-smoothing: antialiased;
-}
-
-img,
-picture,
-video,
-canvas {
-	display: block;
-	max-width: 100%;
-}
-
-input,
-button,
-textarea,
-select {
-	font: inherit;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	overflow-wrap: break-word;
-	text-wrap: balance;
-}
-
-p {
-	overflow-wrap: break-word;
-	text-wrap: pretty;
-}
-
-a {
-	word-wrap: break-word;
-	cursor: pointer;
-}
+@import './styles/reset.css';
+@import './styles/global.css';

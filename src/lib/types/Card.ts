@@ -29,6 +29,13 @@ export const ValueSymbol: Record<CardValue, string> = {
 	1: '10',
 	0: '9'
 } as const;
+export const ValueName: Record<CardValue, keyof typeof Value> = Object.entries(Value).reduce(
+	(acc, [key, value]) => {
+		acc[value as CardValue] = key as keyof typeof Value;
+		return acc;
+	},
+	{} as Record<CardValue, keyof typeof Value>
+);
 
 export const SuitEmoji: Record<CardSuit, string> = {
 	H: '♥️',
@@ -36,3 +43,10 @@ export const SuitEmoji: Record<CardSuit, string> = {
 	D: '♦️',
 	C: '♣️'
 } as const;
+export const SuitName: Record<CardSuit, keyof typeof Suit> = Object.entries(Suit).reduce(
+	(acc, [key, value]) => {
+		acc[value as CardSuit] = key as keyof typeof Suit;
+		return acc;
+	},
+	{} as Record<CardSuit, keyof typeof Suit>
+);
