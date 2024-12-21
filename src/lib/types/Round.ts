@@ -1,6 +1,6 @@
+import type { TrickState } from '$lib/state/TrickState.svelte';
 import type { Card, CardSuit } from './Card';
 import type { Hand } from './Hand';
-import type { Trick } from './Trick';
 
 export const RoundStatus = {
 	Bidding: 0,
@@ -16,5 +16,5 @@ export type Round = {
 	trump?: CardSuit;
 	goingAlone: boolean;
 	hands?: [Hand, Hand, Hand, Hand];
-	tricks: Trick[];
+	tricks: TrickState[];
 };

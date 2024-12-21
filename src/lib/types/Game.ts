@@ -1,9 +1,9 @@
+import type { RoundState } from '$lib/state/RoundState.svelte';
 import type { Player } from './Player';
-import type { Round } from './Round';
 
 export type Game = {
 	id: number;
 	players: [Player | undefined, Player | undefined, Player | undefined, Player | undefined];
 	initialDealer: number;
-	rounds: Round[];
+	rounds: RoundState[];
 };

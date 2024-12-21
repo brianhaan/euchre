@@ -8,9 +8,10 @@
 	import Card from '../components/Card.svelte';
 
 	const game = new GameState();
-	let dealer = $derived(getCurrentDealer(game));
-	let round = $derived(game.rounds[game.rounds.length - 1]);
-	let { action, player: playerNumber } = $derived.by(() => getCurrentAction(game));
+	const dealer = $derived(getCurrentDealer(game));
+	const round = $derived(game.rounds[game.rounds.length - 1]);
+	const trick = $derived(round.tricks[round.tricks.length - 1]);
+	const { action, player: playerNumber } = $derived(getCurrentAction(game));
 </script>
 
 <div class="wrapper mb-6">
@@ -50,14 +51,20 @@
 			</div>
 			<div class="flex gap-1">
 				{#each round?.hands?.[playerIndex] ?? [] as cardInHand}
-					<Card
-						card={cardInHand.card}
-						onclick={() => {
-							if (action === Action.SwapCard && playerIndex === playerNumber) {
-								round.swapCard(playerIndex, cardInHand.card);
-							}
-						}}
-					/>
+					{#if !cardInHand.isPlayed}
+						<Card
+							card={cardInHand.card}
+							onclick={() => {
+								if (playerIndex === playerNumber) {
+									if (action === Action.SwapCard) {
+										round.swapCard(playerIndex, cardInHand.card);
+									} else if (action === Action.PlayCard) {
+										round.playCard(playerIndex, cardInHand.card);
+									}
+								}
+							}}
+						/>
+					{/if}
 				{/each}
 			</div>
 			{#if playerNumber === playerIndex && round.status !== RoundStatus.Tricks}
@@ -139,6 +146,24 @@
 		</div>
 	{/each}
 </div>
+
+{#if round.status === RoundStatus.Tricks}
+	<div class="wrapper mt-6">
+		<div>
+			<p>Trick: {round.tricks.length}</p>
+		</div>
+		<div class="flex flex-row gap-4">
+			{#each trick.cards as card, cardIndex}
+				<div>
+					<div>Player {cardIndex + 1}</div>
+					{#if card}
+						<div><Card {card} /></div>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}
 
 <style>
 	.wrapper {

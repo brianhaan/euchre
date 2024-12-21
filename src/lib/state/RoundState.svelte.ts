@@ -36,6 +36,10 @@ export class RoundState implements Round {
 			this.startTrick();
 		} else {
 			this.trump = this.cardShowing?.suit;
+			if (goingAlone && this.bids.length === 2) {
+				// Going Alone and Partner is dealer - no swap necessary
+				this.startTrick();
+			}
 		}
 	}
 
@@ -46,27 +50,37 @@ export class RoundState implements Round {
 			hand[cardToSwap].card.suit = this.cardShowing.suit;
 			hand[cardToSwap].card.value = this.cardShowing.value;
 		}
-		this.cardShowing = undefined;
 		this.startTrick();
 	}
 
 	playCard(playerNumber: number, card: Card) {
-		if (this.tricks[this.tricks.length - 1] && this.hands?.[playerNumber]) {
-			const cardToPlay = this.hands?.[playerNumber].findIndex(
-				(handCard) => handCard.card.suit === card.suit && handCard.card.value === card.value
-			);
+		const hand = this.hands?.[playerNumber];
+		const trick = this.tricks[this.tricks.length - 1];
+		if (hand && trick) {
+			const cardToPlay = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
 			if (typeof cardToPlay !== 'undefined') {
-				this.hands[playerNumber][cardToPlay].isPlayed = true;
-				this.tricks[this.tricks.length - 1].cards[playerNumber] =
-					this.hands[playerNumber][cardToPlay].card;
+				hand[cardToPlay].isPlayed = true;
+				trick.cards[playerNumber] = hand[cardToPlay].card;
+			}
+
+			const numCardsPlayed = trick.getNumCardsPlayed();
+			if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
+				this.finishTrick();
 			}
 		}
 	}
 
 	startTrick() {
+		this.cardShowing = undefined;
 		this.status = RoundStatus.Tricks;
 		this.tricks.push(new TrickState());
 	}
 
-	finishTrick() {}
+	finishTrick() {
+		if (this.tricks.length === 5) {
+			this.status = RoundStatus.Complete;
+		} else {
+			this.startTrick();
+		}
+	}
 }
