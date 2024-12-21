@@ -10,7 +10,7 @@
 	let { suit, value } = $derived(card);
 </script>
 
-<button class="card" aria-label="">
+<button class="card" aria-label="" {onclick}>
 	<div class="value">{ValueSymbol[value]}</div>
 	<div class="suit">{SuitEmoji[suit]}</div>
 </button>
