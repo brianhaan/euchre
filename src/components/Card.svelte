@@ -10,7 +10,7 @@
 	let { suit, value } = $derived(card);
 </script>
 
-<button class="card" aria-label="" {onclick}>
+<button class="card {variant === 'disabled' ? 'disabled' : ''}" aria-label="" {onclick}>
 	<div class="value">{ValueSymbol[value]}</div>
 	<div class="suit">{SuitEmoji[suit]}</div>
 </button>
@@ -22,6 +22,9 @@
 		width: 100%;
 		border: 1px solid gray;
 		background: #fffdf4;
+	}
+	.card.disabled {
+		background: lightgray;
 	}
 	.value {
 		font-size: 2em;

@@ -3,5 +3,6 @@ export const Action = {
 	PassOrAcceptWithTrump: 1,
 	StickTheDealer: 2,
 	SwapCard: 3,
-	PlayCard: 4
+	PlayCard: 4,
+	Invalid: 5
 };

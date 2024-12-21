@@ -1,6 +1,6 @@
 import { Suit, Value, type Card, type CardSuit } from '$lib/types/Card';
 
-const LeftBowerMap = {
+export const LeftBowerMap = {
 	[Suit.Clubs]: Suit.Spades,
 	[Suit.Diamonds]: Suit.Hearts,
 	[Suit.Hearts]: Suit.Diamonds,
