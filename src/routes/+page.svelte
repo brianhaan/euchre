@@ -3,17 +3,14 @@
 	import { Action } from '$lib/types/Action';
 	import { Suit, SuitEmoji, Value } from '$lib/types/Card';
 	import { RoundStatus } from '$lib/types/Round';
-	import { getCurrentAction } from '$lib/utilities/getCurrentAction';
-	import { getCurrentDealer } from '$lib/utilities/getCurrentDealer';
-	import { getCurrentPlayer } from '$lib/utilities/getCurrentPlayer';
 	import Card from '../components/Card.svelte';
 
 	const game = new GameState();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const trick = $derived(round?.tricks[round.tricks.length - 1]);
-	const action = $derived(getCurrentAction(game));
-	const playerNumber = $derived(getCurrentPlayer(game));
-	const dealer = $derived(getCurrentDealer(game));
+	const action = $derived(game.getCurrentAction());
+	const playerNumber = $derived(game.getCurrentPlayer());
+	const dealer = $derived(game.getCurrentDealer());
 
 	const trickWinners = $derived(round?.getTrickWinners());
 	const score = $derived(game.getScore());

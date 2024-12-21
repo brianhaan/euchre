@@ -39,7 +39,7 @@ export class RoundState implements Round {
 		} else {
 			this.trump = this.cardShowing?.suit;
 			if (goingAlone && this.bids.length === 2) {
-				// Going Alone and Partner is dealer - no swap necessary
+				// Going Alone and partner is dealer - no swap necessary
 				this.startTrick();
 			}
 		}
