@@ -14,7 +14,6 @@
 	type Position = 'bottom' | 'left' | 'top' | 'right';
 
 	const { player, mainPlayer, game }: Props = $props();
-	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const playerIndex = $derived(game.players.findIndex((p) => p.id === player.id));
 	const currentPlayer = $derived(game.getCurrentPlayer());
 	const dealer = $derived(game.getCurrentDealer());
@@ -30,9 +29,7 @@
 </script>
 
 <div class="player-panel {position} z-1 absolute">
-	<!-- <div class="info-wrapper absolute inset-0">
-		<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
-	</div> -->
+	<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
 	<div class="hand-wrapper h-full w-full">
 		<PlayerHand {game} {position} {playerIndex} />
 	</div>
@@ -50,14 +47,15 @@
 		}
 		&.bottom {
 			bottom: 0;
-			transform: translateY(min(2vh, 2vw));
+			transform: translateY(min(6vh, 6vw));
 			.hand-wrapper {
-				scale: 140%;
+				scale: 125%;
 			}
 		}
 		&.top {
 			top: 0;
-			transform: translateY(max(-4vh, -4vw));
+			transform: translateY(max(-5.5vh, -5.5vw));
+			scale: 90%;
 			.hand-wrapper {
 				rotate: 180deg;
 			}
@@ -78,6 +76,7 @@
 		&.right {
 			top: 0;
 			bottom: 0;
+			scale: 90%;
 			width: min(10vh, 10vw);
 			height: min(20vh, 20vw);
 			margin-block: auto;

@@ -25,8 +25,6 @@
 
 	const r = 'min(75vw, 75vh)';
 	const theta = 14;
-	// const r = position === 'bottom' ? '60vw' : '40vw';
-	// const theta = position === 'bottom' ? 15 : 10;
 	const n = $derived.by(() => {
 		return hand
 			.map((cardInHand: CardInHand) => (cardInHand.isPlayed ? 0 : 1))
@@ -34,17 +32,11 @@
 	});
 </script>
 
-<div
-	class="hand-container mx-auto h-full w-full {position} relative"
-	style="translate: -{(n - 1) * 30}%"
->
-	<div class="hand-rotator h-full w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
+<div class="hand-container mx-auto w-full {position} relative" style="translate: -{(n - 1) * 45}%">
+	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
 		{#each cards as cardInHand, i}
 			{#if !cardInHand.isPlayed}
-				<div
-					class="card-rotator absolute left-0 right-0 top-0 flex-grow"
-					style="rotate: {theta * i}deg; height: {r};"
-				>
+				<div class="card-rotator absolute w-full" style="rotate: {theta * i}deg; height: {r};">
 					<div class="card-container">
 						<Card
 							card={cardInHand.card}
@@ -66,11 +58,9 @@
 </div>
 
 <style>
-	.card-container {
-		&:hover {
-			scale: 1.1;
-			z-index: 200;
-			transition: all 0.1s;
-		}
+	.card-rotator:hover {
+		scale: 1.07;
+		z-index: 200;
+		transition: all 0.1s;
 	}
 </style>
