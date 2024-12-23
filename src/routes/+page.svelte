@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { GameState } from '$lib/state/GameState.svelte';
-	import ActionDialog from '../components/ActionDialog.svelte';
 	import Board from '../components/Board/Board.svelte';
 	import PlayerPanel from '../components/PlayerPanel/PlayerPanel.svelte';
 	import Score from '../components/Score.svelte';
@@ -26,7 +25,6 @@
 		{/if}
 		{#each game.players as player}
 			<PlayerPanel {game} {player} {mainPlayer} />
-			<ActionDialog />
 		{/each}
 	</div>
 </main>

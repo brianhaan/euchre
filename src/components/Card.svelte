@@ -48,7 +48,7 @@
 		font-family: serif;
 		aspect-ratio: 9 / 14;
 		width: 100%;
-		min-width: 100px;
+		max-height: 100%;
 		color: black;
 		&.no-click {
 			cursor: normal;
@@ -59,7 +59,9 @@
 			color: red;
 		}
 		&.disabled {
-			background: lightgray;
+			.wrapper {
+				background: #cccccc;
+			}
 		}
 	}
 
@@ -69,7 +71,7 @@
 		background: var(--bg-card);
 		border-radius: 8cqw;
 		position: relative;
-		box-shadow: 4cqw 4cqw 4cqw rgba(0, 0, 0, 0.3);
+		box-shadow: 2cqw 2cqw 4cqw rgba(0, 0, 0, 0.3);
 		border: 2px solid black;
 	}
 

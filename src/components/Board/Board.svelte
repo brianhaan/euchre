@@ -16,7 +16,7 @@
 	{#if !round || round.status === RoundStatus.Complete}
 		<button onclick={() => game.startNewRound()} class="text-xl">Start New Round</button>
 	{:else if round.status === RoundStatus.Bidding}
-		<Bidding {round} />
+		<Bidding {game} />
 	{:else if round.status === RoundStatus.Tricks}
 		<Trick />
 	{/if}
@@ -30,8 +30,8 @@
 		inset: 0;
 		margin-block: auto;
 		margin-inline: auto;
-		width: 25%;
-		height: 25%;
+		width: 30%;
+		height: 30%;
 		display: flex;
 		align-items: center;
 		justify-content: center;

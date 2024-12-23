@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
-	import { Action } from '$lib/types/Action';
+	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import type { Player } from '$lib/types/Player';
-	import Card from '../Card.svelte';
+	import { RoundStatus } from '$lib/types/Round';
+	import BidPanel from './BidPanel.svelte';
 	import PlayerHand from './PlayerHand.svelte';
 	import PlayerInfo from './PlayerInfo.svelte';
 
@@ -27,53 +28,69 @@
 		const index = playerByMain.findIndex((p) => p.id === player.id);
 		return index === 0 ? 'bottom' : index === 1 ? 'left' : index === 2 ? 'top' : 'right';
 	});
+	const hand = $derived((round?.hands?.[playerIndex] ?? []) as Hand);
+	const numCards = $derived.by(() => {
+		return hand
+			.map((cardInHand: CardInHand) => (cardInHand.isPlayed ? 0 : 1))
+			.reduce((acc: number, value) => acc + value, 0);
+	});
 </script>
 
-<div class="player-panel {position} absolute p-4">
-	<div class="info-container"><PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} /></div>
-	<div class="hand-container">
-		<PlayerHand {round} {position} {playerIndex} />
+<div class="player-panel {position} absolute">
+	<!-- <div class="info-container absolute inset-0">
+		<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
+	</div> -->
+	<div class="hand-container mx-auto h-full border border-red-600" style="width: {numCards * 20}%">
+		<PlayerHand {game} {position} {playerIndex} />
 	</div>
 </div>
 
 <style>
 	.player-panel {
-		font-size: 24px;
-		&.bottom {
+		&.bottom,
+		&.top {
 			left: 0;
 			right: 0;
-			bottom: 0;
+			height: min(20vh, 20vw);
 			width: min(50vh, 50vw);
 			margin-inline: auto;
-			border-bottom: 0;
+		}
+		&.bottom {
+			bottom: 0;
 			.hand-container {
 				scale: 125%;
 				transform: translateY(-20px);
 			}
 		}
-		&.left {
-			left: 0;
-			top: 0;
-			bottom: 0;
-			height: min(50vh, 50vw);
-			margin-block: auto;
-			border-left: 0;
-		}
 		&.top {
 			top: 0;
+			.hand-container {
+				rotate: 180deg;
+			}
+		}
+		&.left {
 			left: 0;
-			right: 0;
-			width: min(50vh, 50vw);
-			margin-inline: auto;
-			border-top: 0;
+			.hand-container {
+				rotate: 90deg;
+				translate: max(-15vh, -15vw);
+				transform-origin: center;
+			}
 		}
 		&.right {
 			right: 0;
+			.hand-container {
+				rotate: -90deg;
+				translate: min(15vh, 15vw);
+				transform-origin: center;
+			}
+		}
+		&.left,
+		&.right {
 			top: 0;
 			bottom: 0;
-			height: min(50vh, 50vw);
+			width: min(50vh, 50vw);
+			height: min(20vh, 20vw);
 			margin-block: auto;
-			border-right: 0;
 		}
 	}
 </style>

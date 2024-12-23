@@ -37,7 +37,7 @@ export class GameState implements Game {
 			return (dealer + 1 + round.bids.length) % 4;
 		} else if (round.status === RoundStatus.Tricks) {
 			const trick = round.tricks[round.tricks.length - 1];
-			const numCardsPlayed = trick.getNumCardsPlayed();
+			const numCardsPlayed = trick ? trick.getNumCardsPlayed() : 0;
 			if (round.tricks.length === 1) {
 				// first trick
 				if (round.goingAlone) {
@@ -48,7 +48,7 @@ export class GameState implements Game {
 					// player to left of dealer starts
 					return (dealer + 1 + numCardsPlayed) % 4;
 				}
-			} else {
+			} else if (round.tricks.length > 1) {
 				// winner of previous trick starts
 				const winner = round.tricks[round.tricks.length - 2].getWinner(round.trump!);
 				if (round.goingAlone) {
@@ -66,6 +66,7 @@ export class GameState implements Game {
 					return (winner + numCardsPlayed) % 4;
 				}
 			}
+			return 0;
 		}
 	}
 

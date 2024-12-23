@@ -32,6 +32,7 @@ export class RoundState implements Round {
 
 	acceptBid(goingAlone: Round['goingAlone'], trump?: Round['trump']) {
 		this.bids.push(true);
+		console.log(goingAlone);
 		this.goingAlone = goingAlone;
 		if (this.bids.length > 4) {
 			this.trump = trump;

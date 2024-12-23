@@ -1,22 +1,26 @@
 <script lang="ts">
-	import type { RoundState } from '$lib/state/RoundState.svelte';
+	import type { GameState } from '$lib/state/GameState.svelte';
+	import { Action } from '$lib/types/Action';
 	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import { getCardInHandScore } from '$lib/utilities/getCardInHandScore';
 	import Card from '../Card.svelte';
 
 	type Props = {
-		round: RoundState;
+		game: GameState;
 		playerIndex: number;
 		position: 'bottom' | 'left' | 'top' | 'right';
 	};
 
-	const { round, playerIndex, position }: Props = $props();
+	const { game, playerIndex, position }: Props = $props();
+	const round = $derived(game.rounds[game.rounds.length - 1]);
+	const action = $derived(game.getCurrentAction());
 	const hand = $derived((round?.hands?.[playerIndex] ?? []) as Hand);
 	const handOrdered = $derived.by(() => {
 		return [...hand].sort((a, b) => {
 			return getCardInHandScore(b.card) - getCardInHandScore(a.card);
 		});
 	});
+	$inspect(hand, handOrdered);
 	const numCards = $derived.by(() => {
 		return hand
 			.map((cardInHand: CardInHand) => (cardInHand.isPlayed ? 0 : 1))
@@ -39,13 +43,11 @@
 					orientation="front"
 					variant={round.canCardBePlayed(playerIndex, cardInHand.card) ? 'default' : 'disabled'}
 					onclick={() => {
-						// if (playerIndex === playerNumber) {
-						// if (action === Action.SwapCard) {
-						// 	round.swapCard(playerIndex, cardInHand.card);
-						// } else if (action === Action.PlayCard) {
-						// 	round.playCard(playerIndex, cardInHand.card);
-						// }
-						// }
+						if (action === Action.SwapCard) {
+							round.swapCard(playerIndex, cardInHand.card);
+						} else if (action === Action.PlayCard) {
+							round.playCard(playerIndex, cardInHand.card);
+						}
 					}}
 				/>
 			</div>
@@ -54,25 +56,7 @@
 </div>
 
 <style>
-	.container {
-		&.left {
-			transform-origin: top left;
-			transform: translateY(-120%);
-			rotate: 90deg;
-		}
-		&.right {
-			transform-origin: top right;
-			transform: translateY(-120%);
-			rotate: -90deg;
-		}
-		&.top {
-			transform-origin: top center;
-			transform: translateY(-120%);
-			rotate: 180deg;
-		}
-	}
 	.card-container {
-		transform-origin: bottom center;
 		&:hover {
 			scale: 1.1;
 			z-index: 200;
