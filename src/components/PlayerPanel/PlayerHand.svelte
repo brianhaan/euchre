@@ -32,11 +32,14 @@
 	});
 </script>
 
-<div class="hand-container mx-auto w-full {position} relative" style="translate: -{(n - 1) * 45}%">
+<div
+	class="hand-container mx-auto w-full {position} relative z-20"
+	style="translate: -{(n - 1) * 45}%"
+>
 	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
 		{#each cards as cardInHand, i}
 			{#if !cardInHand.isPlayed}
-				<div class="card-rotator absolute w-full" style="rotate: {theta * i}deg; height: {r};">
+				<div class="card-rotator absolute z-30 w-full" style="rotate: {theta * i}deg; height: {r};">
 					<div class="card-container">
 						<Card
 							card={cardInHand.card}

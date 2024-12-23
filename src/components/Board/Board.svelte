@@ -25,7 +25,7 @@
 <style>
 	.board {
 		position: absolute;
-		z-index: 10;
+		z-index: 100;
 		border: 1px solid rgba(255, 255, 255, 0.5);
 		border-radius: 10px;
 		inset: 0;

@@ -11,9 +11,7 @@
 	const { player, playerIndex, currentPlayer, dealer } = $props();
 </script>
 
-<div class="absolute inset-0 flex items-center justify-center border border-red-500">
-	<strong>{player.name ?? `Player ${playerIndex + 1}`}</strong>
-</div>
+<!-- <strong>{player.name ?? `Player ${playerIndex + 1}`}</strong> -->
 
 <!-- <div class="relative flex gap-4">
 	{#if currentPlayer === playerIndex}

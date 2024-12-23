@@ -16,13 +16,14 @@
 	// const score = $derived(game.getScore());
 </script>
 
-<main class="h-screen w-screen p-16">
+<main class="h-screen w-screen overflow-hidden p-16">
 	<div class="relative h-full w-full rounded-xl bg-[--bg-board] shadow-xl">
 		<Board {game} />
 		{#if game.rounds.length}
 			<Score {game} />
 			<TrumpCard suit={round?.trump} />
 		{/if}
+
 		{#each game.players as player}
 			<PlayerPanel {game} {player} {mainPlayer} />
 		{/each}

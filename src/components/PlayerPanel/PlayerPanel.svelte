@@ -28,58 +28,50 @@
 	});
 </script>
 
-<div class="player-panel {position} z-1 absolute">
-	<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
-	<div class="hand-wrapper h-full w-full">
-		<PlayerHand {game} {position} {playerIndex} />
+<!-- TODO the check for currentPlayer === playerIndex can be removed when only controlling one player -->
+<div
+	class="player-panel-wrapper {position} absolute inset-0 {currentPlayer === playerIndex
+		? 'z-10'
+		: ''}"
+>
+	<div class="player-panel absolute">
+		<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
+		<div class="hand-wrapper mx-auto h-full">
+			<PlayerHand {game} {position} {playerIndex} />
+		</div>
 	</div>
 </div>
 
 <style>
-	.player-panel {
-		&.bottom,
+	.player-panel-wrapper {
 		&.top {
-			left: 0;
-			right: 0;
-			height: min(20vh, 20vw);
-			width: min(10vh, 10vw);
-			margin-inline: auto;
-		}
-		&.bottom {
-			bottom: 0;
-			transform: translateY(min(6vh, 6vw));
-			.hand-wrapper {
-				scale: 125%;
-			}
-		}
-		&.top {
-			top: 0;
-			transform: translateY(max(-5.5vh, -5.5vw));
-			scale: 90%;
-			.hand-wrapper {
-				rotate: 180deg;
-			}
+			rotate: 180deg;
+			/* transform: translateY(calc((100vw - 100vh) / 2)); */
 		}
 		&.left {
-			left: 0;
-			.hand-wrapper {
-				rotate: 90deg;
-			}
+			rotate: 90deg;
+			transform: translateY(calc((100vw - 100vh) / 2));
 		}
 		&.right {
-			right: 0;
-			.hand-wrapper {
-				rotate: -90deg;
-			}
+			rotate: -90deg;
+			transform: translateY(calc((100vw - 100vh) / 2));
 		}
-		&.left,
-		&.right {
-			top: 0;
-			bottom: 0;
-			scale: 90%;
-			width: min(10vh, 10vw);
-			height: min(20vh, 20vw);
-			margin-block: auto;
+		&.bottom {
+			z-index: 10;
 		}
+	}
+	.player-panel {
+		bottom: 0;
+		width: 100%;
+		height: min(20vh, 20vw);
+	}
+
+	.hand-wrapper {
+		width: min(10vh, 10vw);
+		scale: 0.9;
+		transform: translateY(min(5vh, 5vh));
+	}
+	.bottom .hand-wrapper {
+		scale: 1.2;
 	}
 </style>
