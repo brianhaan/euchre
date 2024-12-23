@@ -1,40 +1,35 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
+	import type { Player } from '$lib/types/Player';
 	import { RoundStatus } from '$lib/types/Round';
 	import Bidding from './Bidding.svelte';
 	import Trick from './Trick.svelte';
 
 	type Props = {
 		game: GameState;
+		mainPlayer: Player['id'];
 	};
 
-	const { game }: Props = $props();
+	const { game, mainPlayer }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 </script>
 
-<div class="board">
+<div
+	class="board absolute inset-0 z-50 mx-auto my-auto flex items-center justify-center rounded-lg border"
+>
 	{#if !round || round.status === RoundStatus.Complete}
 		<button onclick={() => game.startNewRound()} class="text-xl">Start New Round</button>
 	{:else if round.status === RoundStatus.Bidding}
 		<Bidding {game} />
 	{:else if round.status === RoundStatus.Tricks}
-		<Trick />
+		<Trick {game} {mainPlayer} />
 	{/if}
 </div>
 
 <style>
 	.board {
-		position: absolute;
-		z-index: 100;
-		border: 1px solid rgba(255, 255, 255, 0.5);
-		border-radius: 10px;
-		inset: 0;
-		margin-block: auto;
-		margin-inline: auto;
-		width: 30%;
-		height: 30%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		border-color: rgba(255, 255, 255, 0.5);
+		width: min(30vh, 30vw);
+		height: min(30vh, 30vw);
 	}
 </style>

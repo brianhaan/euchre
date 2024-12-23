@@ -92,7 +92,9 @@ export class RoundState implements Round {
 
 			const numCardsPlayed = trick.getNumCardsPlayed();
 			if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
-				this.finishTrick();
+				setTimeout(() => {
+					this.finishTrick();
+				}, 1000);
 			}
 		}
 	}

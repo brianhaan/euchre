@@ -32,7 +32,6 @@
 	const r = 'min(75vw, 75vh)';
 	const theta = 14;
 	const n = $derived(cards.length);
-	$inspect(round.cardShowing);
 </script>
 
 <div

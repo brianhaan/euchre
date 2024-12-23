@@ -2,6 +2,7 @@
 	import type { GameState } from '$lib/state/GameState.svelte';
 	import type { Player } from '$lib/types/Player';
 	import { RoundStatus } from '$lib/types/Round';
+	import { getPlayerPosition } from '$lib/utilities/getPlayerPosition';
 	import CurrentPlayerIndicator from './CurrentPlayerIndicator.svelte';
 	import DealerButton from './DealerButton.svelte';
 	import PlayerHand from './PlayerHand.svelte';
@@ -12,22 +13,13 @@
 		mainPlayer: Player['id'];
 		game: GameState;
 	};
-	type Position = 'bottom' | 'left' | 'top' | 'right';
 
 	const { player, mainPlayer, game }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const playerIndex = $derived(game.players.findIndex((p) => p.id === player.id));
 	const currentPlayer = $derived(game.getCurrentPlayer());
 	const dealer = $derived(game.getCurrentDealer());
-	const position: Position = $derived.by(() => {
-		const mainPlayerIndex = game.players.findIndex((p) => p.id === mainPlayer);
-		const playerByMain = [
-			...game.players.slice(mainPlayerIndex),
-			...game.players.slice(0, mainPlayerIndex)
-		];
-		const index = playerByMain.findIndex((p) => p.id === player.id);
-		return index === 0 ? 'bottom' : index === 1 ? 'left' : index === 2 ? 'top' : 'right';
-	});
+	const position = $derived(getPlayerPosition(player.id, game.players, mainPlayer));
 </script>
 
 {#if round && round.status !== RoundStatus.Complete}
@@ -38,7 +30,7 @@
 			: ''}"
 	>
 		<div class="player-panel absolute">
-			<PlayerName {player} {playerIndex} isMainPlayer={position === 'bottom'} />
+			<PlayerName {player} {playerIndex} {position} />
 			<DealerButton {dealer} {playerIndex} />
 			<CurrentPlayerIndicator {currentPlayer} {playerIndex} />
 			<div class="hand-wrapper mx-auto h-full">
