@@ -15,23 +15,19 @@
 	// const dealer = $derived(game.getCurrentDealer());
 	// const trickWinners = $derived(round?.getTrickWinners());
 	// const score = $derived(game.getScore());
+
+	// TODO
+	// 1. show cards played in trick
+	// 2. show tricks in player panel
 </script>
 
-<main class="h-screen w-screen overflow-hidden p-16">
-	<div class="relative h-full w-full rounded-xl bg-[--bg-board] shadow-xl">
-		<Board {game} />
-		{#if game.rounds.length}
-			<Score {game} />
-			{#if round && round.status !== RoundStatus.Complete}
-				<TrumpCard suit={round?.trump} />
-			{/if}
-		{/if}
-
-		{#each game.players as player}
-			<PlayerPanel {game} {player} {mainPlayer} />
-		{/each}
-	</div>
-</main>
-
-<style>
-</style>
+<Board {game} />
+{#if game.rounds.length}
+	<Score {game} />
+	{#if round && round.status !== RoundStatus.Complete}
+		<TrumpCard suit={round?.trump} />
+	{/if}
+{/if}
+{#each game.players as player}
+	<PlayerPanel {game} {player} {mainPlayer} />
+{/each}

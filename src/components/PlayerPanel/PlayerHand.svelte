@@ -8,28 +8,31 @@
 	type Props = {
 		game: GameState;
 		playerIndex: number;
+		dealer: number;
 		position: 'bottom' | 'left' | 'top' | 'right';
 	};
 
-	const { game, playerIndex, position }: Props = $props();
+	const { game, playerIndex, position, dealer }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const action = $derived(game.getCurrentAction());
+
 	const hand = $derived((round?.hands?.[playerIndex] ?? []) as Hand);
 	const cards = $derived.by(() => {
-		return [...hand]
+		const cardsInHand = [...hand]
 			.sort((a, b) => {
 				return getCardInHandScore(b.card) - getCardInHandScore(a.card);
 			})
 			.filter((cardInHand) => !cardInHand.isPlayed);
+		if (action === Action.SwapCard && dealer === playerIndex && round.cardShowing) {
+			cardsInHand.push({ isPlayed: false, card: round.cardShowing });
+		}
+		return cardsInHand;
 	});
 
 	const r = 'min(75vw, 75vh)';
 	const theta = 14;
-	const n = $derived.by(() => {
-		return hand
-			.map((cardInHand: CardInHand) => (cardInHand.isPlayed ? 0 : 1))
-			.reduce((acc: number, value) => acc + value, 0);
-	});
+	const n = $derived(cards.length);
+	$inspect(round.cardShowing);
 </script>
 
 <div

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
-	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import type { Player } from '$lib/types/Player';
 	import { RoundStatus } from '$lib/types/Round';
 	import CurrentPlayerIndicator from './CurrentPlayerIndicator.svelte';
@@ -43,7 +42,7 @@
 			<DealerButton {dealer} {playerIndex} />
 			<CurrentPlayerIndicator {currentPlayer} {playerIndex} />
 			<div class="hand-wrapper mx-auto h-full">
-				<PlayerHand {game} {position} {playerIndex} />
+				<PlayerHand {game} {position} {playerIndex} {dealer} />
 			</div>
 		</div>
 	</div>
@@ -53,7 +52,6 @@
 	.player-panel-wrapper {
 		&.top {
 			rotate: 180deg;
-			/* transform: translateY(calc((100vw - 100vh) / 2)); */
 		}
 		&.left {
 			rotate: 90deg;
