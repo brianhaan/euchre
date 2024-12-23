@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { GameState } from '$lib/state/GameState.svelte';
+	import { RoundStatus } from '$lib/types/Round';
 	import Board from '../components/Board/Board.svelte';
 	import PlayerPanel from '../components/PlayerPanel/PlayerPanel.svelte';
 	import Score from '../components/Score.svelte';
@@ -21,7 +22,9 @@
 		<Board {game} />
 		{#if game.rounds.length}
 			<Score {game} />
-			<TrumpCard suit={round?.trump} />
+			{#if round && round.status !== RoundStatus.Complete}
+				<TrumpCard suit={round?.trump} />
+			{/if}
 		{/if}
 
 		{#each game.players as player}

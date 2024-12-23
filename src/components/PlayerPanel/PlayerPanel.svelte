@@ -3,8 +3,10 @@
 	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import type { Player } from '$lib/types/Player';
 	import { RoundStatus } from '$lib/types/Round';
+	import CurrentPlayerIndicator from './CurrentPlayerIndicator.svelte';
+	import DealerButton from './DealerButton.svelte';
 	import PlayerHand from './PlayerHand.svelte';
-	import PlayerInfo from './PlayerInfo.svelte';
+	import PlayerName from './PlayerName.svelte';
 
 	type Props = {
 		player: Player;
@@ -14,6 +16,7 @@
 	type Position = 'bottom' | 'left' | 'top' | 'right';
 
 	const { player, mainPlayer, game }: Props = $props();
+	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const playerIndex = $derived(game.players.findIndex((p) => p.id === player.id));
 	const currentPlayer = $derived(game.getCurrentPlayer());
 	const dealer = $derived(game.getCurrentDealer());
@@ -28,19 +31,23 @@
 	});
 </script>
 
-<!-- TODO the check for currentPlayer === playerIndex can be removed when only controlling one player -->
-<div
-	class="player-panel-wrapper {position} absolute inset-0 {currentPlayer === playerIndex
-		? 'z-10'
-		: ''}"
->
-	<div class="player-panel absolute">
-		<PlayerInfo {player} {playerIndex} {dealer} {currentPlayer} />
-		<div class="hand-wrapper mx-auto h-full">
-			<PlayerHand {game} {position} {playerIndex} />
+{#if round && round.status !== RoundStatus.Complete}
+	<!-- TODO the check for currentPlayer === playerIndex can be removed when only controlling one player -->
+	<div
+		class="player-panel-wrapper {position} absolute inset-0 {currentPlayer === playerIndex
+			? 'z-10'
+			: ''}"
+	>
+		<div class="player-panel absolute">
+			<PlayerName {player} {playerIndex} isMainPlayer={position === 'bottom'} />
+			<DealerButton {dealer} {playerIndex} />
+			<CurrentPlayerIndicator {currentPlayer} {playerIndex} />
+			<div class="hand-wrapper mx-auto h-full">
+				<PlayerHand {game} {position} {playerIndex} />
+			</div>
 		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.player-panel-wrapper {
@@ -69,9 +76,10 @@
 	.hand-wrapper {
 		width: min(10vh, 10vw);
 		scale: 0.9;
-		transform: translateY(min(5vh, 5vh));
+		transform: translateY(min(4vh, 4vh));
 	}
 	.bottom .hand-wrapper {
 		scale: 1.2;
+		transform: translateY(min(1.5vh, 1.5vh));
 	}
 </style>
