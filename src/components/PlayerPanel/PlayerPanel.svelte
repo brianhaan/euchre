@@ -66,6 +66,7 @@
 		width: min(24vh, 24vw);
 		@media screen and (min-width: 640px) and (min-height: 640px) {
 			scale: 0.8;
+			transform: translateY(min(8vh, 8vw));
 			width: min(14vh, 14vw);
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
@@ -74,8 +75,11 @@
 		}
 	}
 	.bottom .hand-wrapper {
-		scale: 1.1;
+		scale: 1.2;
 		transform: translateY(min(1.5vh, 1.5vw));
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			transform: translateY(min(5vh, 5vw));
+		}
 
 		@media screen and (min-width: 960px) and (min-height: 960px) {
 			scale: 1.3;

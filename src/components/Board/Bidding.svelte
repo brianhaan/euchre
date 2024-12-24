@@ -13,7 +13,7 @@
 
 {#if action !== Action.SwapCard && action !== Action.PlayCard && action !== Action.Invalid}
 	<div class="container h-full">
-		<div class="flex h-full items-center justify-center p-4 pb-0">
+		<div class="flex h-full items-center justify-center p-1 pb-0 md:p-4">
 			<div
 				class="card-container flex items-center justify-center rounded-lg border-2 border-dashed p-1"
 			>
@@ -22,7 +22,7 @@
 				{/if}
 			</div>
 		</div>
-		<div class="flex flex-col justify-center gap-2 p-4 pb-0">
+		<div class="flex flex-col justify-center gap-1 p-2 pb-0 md:gap-1.5 md:p-4 lg:gap-2">
 			{#each Object.entries(Suit) as [_, suit]}
 				<button
 					onclick={() => round.acceptBid(goingAlone, suit)}
@@ -30,13 +30,20 @@
 					class="bg-white">{SuitEmoji[suit]}</button
 				>
 			{/each}
-			<label class="mt-1" for="going-alone"
-				><input type="checkbox" id="going-alone" bind:checked={goingAlone} /> Going Alone?</label
+			<label
+				class="mt-1 flex cursor-pointer select-none items-center gap-2 text-xs md:text-lg lg:text-xl"
+				for="going-alone"
+				><input
+					type="checkbox"
+					class="h-3 w-3 cursor-pointer md:h-5 md:w-5"
+					id="going-alone"
+					bind:checked={goingAlone}
+				/><span class="hidden sm:inline">Going </span>Alone?</label
 			>
 		</div>
-		<div class="pass-container p-4 text-center">
+		<div class="pass-container p-2 text-center lg:p-4">
 			{#if action === Action.StickTheDealer}
-				<div class="h-[46px] text-2xl">Dealer must choose a suit</div>
+				<div class="h-[46px] text-sm md:text-2xl">Dealer must choose a suit</div>
 			{:else}
 				<button onclick={() => round.passBid()} class=" bg-blue-300 text-black shadow-lg"
 					>Pass</button
@@ -45,7 +52,7 @@
 		</div>
 	</div>
 {:else if action === Action.SwapCard && typeof playerNumber !== 'undefined'}
-	<div class="flex items-center justify-center p-8 text-center text-2xl">
+	<div class="flex items-center justify-center p-2 text-center text-sm sm:p-4 md:text-2xl lg:p-8">
 		Waiting for {game.players[playerNumber].name ?? `Player ${playerNumber + 1}`} to discard a card...
 	</div>
 {/if}
@@ -63,31 +70,32 @@
 	}
 	.card-container {
 		aspect-ratio: 9 / 14;
-		width: min(calc(50cqw * 9 / 14 - 10px), calc(50cqh * 9 / 14 - 10px));
+		width: min(calc(60cqw * 9 / 14 - 10px), calc(60cqh * 9 / 14 - 10px));
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			width: min(calc(50cqw * 9 / 14 - 10px), calc(50cqh * 9 / 14 - 10px));
+		}
 	}
 	button {
 		width: 100%;
-		border-radius: 10px;
-		padding-inline: 16px;
-		padding-block: 8px;
-		font-size: 20px;
+		border-radius: 6px;
+		padding-inline: 4px;
+		padding-block: 3px;
+		font-size: 12px;
 		font-weight: bold;
 		&:disabled {
 			background-color: rgba(180, 180, 180, 0.7);
 			cursor: not-allowed;
 		}
-	}
-	label {
-		font-size: 20px;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		user-select: none;
-		cursor: pointer;
-	}
-	input[type='checkbox'] {
-		height: 20px;
-		width: 20px;
-		cursor: pointer;
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			border-radius: 10px;
+			padding-inline: 8px;
+			padding-block: 4px;
+			font-size: 16px;
+		}
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			padding-inline: 16px;
+			padding-block: 5px;
+			font-size: 18px;
+		}
 	}
 </style>

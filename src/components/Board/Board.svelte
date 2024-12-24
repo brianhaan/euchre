@@ -20,7 +20,7 @@
 	{#if !round || round.status === RoundStatus.Complete}
 		<button onclick={() => game.startNewRound()} class="text-xl">Start New Round</button>
 	{:else if round.status === RoundStatus.Bidding}
-		<!-- <Bidding {game} /> -->
+		<Bidding {game} />
 	{:else if round.status === RoundStatus.Tricks}
 		<Trick {game} {mainPlayer} />
 	{/if}
@@ -31,11 +31,11 @@
 		border-color: rgba(255, 255, 255, 0.5);
 		width: min(50vh, 50vw);
 		height: min(50vh, 50vw);
-		@media screen and (min-width: 960px) and (min-height: 960px) {
-			width: min(40vh, 40vw);
-			height: min(40vh, 40vw);
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			width: min(35vh, 35vw);
+			height: min(35vh, 35vw);
 		}
-		@media screen and (min-width: 1280px) and (min-height: 1280px) {
+		@media screen and (min-width: 960px) and (min-height: 960px) {
 			width: min(30vh, 30vw);
 			height: min(30vh, 30vw);
 		}

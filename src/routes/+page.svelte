@@ -7,7 +7,7 @@
 	import TrumpCard from '../components/TrumpCard.svelte';
 
 	const game = new GameState();
-	const mainPlayer = 1; // your player ID or ID you are viewing as at bottom of screen
+	const mainPlayer = 0; // your player ID or ID you are viewing as at bottom of screen
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const currentPlayer = $derived(game.getCurrentPlayer());
 </script>

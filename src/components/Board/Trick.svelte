@@ -47,7 +47,14 @@
 		}
 	}
 	.card-container {
-		width: min(8vh, 8vw);
-		bottom: max(-3vh, -3vw);
+		width: min(12vh, 12vw);
+		bottom: max(-5vh, -5vw);
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			width: min(10vh, 10vw);
+			bottom: max(-6vh, -6vw);
+		}
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			width: min(8vh, 8vw);
+		}
 	}
 </style>
