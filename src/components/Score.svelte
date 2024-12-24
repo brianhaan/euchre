@@ -5,18 +5,12 @@
 	const score = $derived(game.getScore());
 </script>
 
-<div class="scoreboard absolute left-4 top-4 p-4 text-xl">
+<div class="scoreboard absolute left-0 top-0 m-2 rounded-lg p-2 text-sm md:m-4 md:p-4 md:text-xl">
 	{score[0]} - {score[1]}
 </div>
 
 <style>
 	.scoreboard {
 		border: 1px solid rgba(255, 255, 255, 0.5);
-		border-radius: 10px;
-	}
-
-	td {
-		padding-inline-start: 28px;
-		text-align: right;
 	}
 </style>
