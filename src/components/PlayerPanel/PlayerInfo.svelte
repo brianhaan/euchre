@@ -14,54 +14,86 @@
 	const { player, playerIndex, dealer, maker, currentPlayer, position }: Props = $props();
 </script>
 
-<div class="player-info absolute bottom-4 left-0 right-0 top-0 {position} flex justify-start">
-	<div class="flex w-40 flex-col-reverse items-end justify-start gap-2">
-		<div class="player-name relative">
-			<div class="max-w-40 truncate text-2xl">{player.name ?? `Player ${playerIndex + 1}`}</div>
-			{#if playerIndex === currentPlayer}
-				<span class="current-player absolute top-0 z-30 text-4xl">➡️</span>
+<div
+	class="player-info-wrapper absolute -bottom-4 left-0 right-0 top-0 flex justify-end sm:-bottom-6 md:-bottom-8 lg:-bottom-10"
+>
+	<div class="player-info mx-auto flex justify-start {position}">
+		<div
+			class="flex w-16 flex-col-reverse items-end justify-start sm:w-24 sm:gap-1 md:w-32 md:gap-4 lg:w-40 lg:gap-6"
+		>
+			<div class="player-name relative">
+				<div
+					class="max-w-16 truncate text-[10px] sm:max-w-24 sm:text-sm md:max-w-32 md:text-lg lg:max-w-40 lg:text-2xl"
+				>
+					{player.name ?? `Player ${playerIndex + 1}`}
+				</div>
+				{#if playerIndex === currentPlayer}
+					<span
+						class="current-player absolute top-0 z-30 text-sm sm:text-lg md:text-2xl lg:text-4xl"
+						>➡️</span
+					>
+				{/if}
+			</div>
+			{#if dealer === playerIndex || maker === playerIndex}
+				<div class="buttons flex flex-row items-center text-5xl">
+					{#if maker === playerIndex}
+						<div
+							class="indicator {dealer === playerIndex ? '-mr-5 sm:-mr-2 md:mr-2 lg:mr-4' : ''}"
+							aria-label="Maker"
+							title="Maker"
+						>
+							⚪
+						</div>
+					{/if}
+					{#if dealer === playerIndex}
+						<div class="indicator" aria-label="Dealer" title="Dealer">🔵</div>
+					{/if}
+				</div>
 			{/if}
 		</div>
-		{#if dealer === playerIndex || maker === playerIndex}
-			<div class="buttons flex flex-row items-center gap-1">
-				<div
-					class="relative"
-					aria-label="Maker"
-					title="Maker"
-					style="visibility: {maker === playerIndex ? 'visible' : 'hidden'}"
-				>
-					<div class="flex items-center justify-center text-5xl">⚪</div>
-					<div class="absolute inset-0 flex items-center justify-center text-3xl">🔴</div>
-				</div>
-				<div
-					class="relative"
-					aria-label="Dealer"
-					title="Dealer"
-					style="visibility: {dealer === playerIndex ? 'visible' : 'hidden'}"
-				>
-					<div class="flex items-center justify-center text-5xl">🔵</div>
-					<div class="absolute inset-0 flex items-center justify-center text-3xl">🟡</div>
-				</div>
-			</div>
-		{/if}
 	</div>
 </div>
 
 <style>
 	.player-info {
-		padding-left: min(18vh, 18vw);
+		width: min(65vh, 65vw);
 		&.bottom {
-			padding-left: min(12vh, 12vw);
+			width: min(100vh, 100vw);
+		}
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			&.bottom {
+				width: min(85vh, 85vw);
+			}
+		}
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			width: min(60vh, 60vw);
+			&.bottom {
+				width: min(80vh, 80vw);
+			}
 		}
 	}
+
 	.top .player-name {
 		rotate: 180deg;
 	}
-	:not(.top) .current-player {
+	.current-player {
 		left: -48px;
 	}
 	.top .current-player {
 		right: -48px;
 		rotate: 180deg;
+	}
+
+	.indicator {
+		scale: 0.5;
+		@media screen and (min-width: 640px) and (min-height: 640px) {
+			scale: 0.7;
+		}
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			scale: 0.9;
+		}
+		@media screen and (min-width: 1280px) and (min-height: 1280px) {
+			scale: 1;
+		}
 	}
 </style>

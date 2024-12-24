@@ -31,7 +31,7 @@
 				>
 			{/each}
 			<label
-				class="mt-1 flex cursor-pointer select-none items-center gap-2 text-xs md:text-lg lg:text-xl"
+				class="mt-1 flex cursor-pointer select-none items-center gap-1 text-xs md:gap-2 md:text-lg lg:text-xl"
 				for="going-alone"
 				><input
 					type="checkbox"
@@ -45,7 +45,7 @@
 			{#if action === Action.StickTheDealer}
 				<div class="h-[46px] text-sm md:text-2xl">Dealer must choose a suit</div>
 			{:else}
-				<button onclick={() => round.passBid()} class=" bg-blue-300 text-black shadow-lg"
+				<button onclick={() => round.passBid()} class="bg-blue-200 text-black shadow-lg"
 					>Pass</button
 				>
 			{/if}
@@ -93,9 +93,14 @@
 			font-size: 16px;
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
-			padding-inline: 16px;
+			padding-inline: 12px;
 			padding-block: 5px;
 			font-size: 18px;
+		}
+		@media screen and (min-width: 1280px) and (min-height: 1280px) {
+			padding-inline: 16px;
+			padding-block: 8px;
+			font-size: 20px;
 		}
 	}
 </style>

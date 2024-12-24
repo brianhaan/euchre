@@ -30,7 +30,7 @@
 			: ''}"
 	>
 		<div class="player-panel absolute bottom-0 w-full">
-			<!-- <PlayerInfo {player} {playerIndex} {dealer} {maker} {position} {currentPlayer} /> -->
+			<PlayerInfo {player} {playerIndex} {dealer} {maker} {position} {currentPlayer} />
 			<div class="hand-wrapper mx-auto h-full">
 				<PlayerHand {game} {position} {playerIndex} {dealer} />
 			</div>
@@ -76,11 +76,10 @@
 	}
 	.bottom .hand-wrapper {
 		scale: 1.2;
-		transform: translateY(min(1.5vh, 1.5vw));
+		transform: translateY(max(-3vh, -3vw));
 		@media screen and (min-width: 640px) and (min-height: 640px) {
 			transform: translateY(min(5vh, 5vw));
 		}
-
 		@media screen and (min-width: 960px) and (min-height: 960px) {
 			scale: 1.3;
 			transform: translateY(min(8vh, 8vw));
