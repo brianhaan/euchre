@@ -8,7 +8,7 @@ export class GameState implements Game {
 	scoreToWin = 10;
 	players = $state([
 		{ id: 0, name: 'Alice' },
-		{ id: 1, name: 'Bob' },
+		{ id: 1, name: 'Bobby-Jones the Great' },
 		{ id: 2, name: 'Charles' },
 		{ id: 3 }
 	] as Game['players']);
@@ -21,6 +21,14 @@ export class GameState implements Game {
 
 	getCurrentDealer() {
 		return (this.initialDealer + this.rounds.length - 1) % 4;
+	}
+
+	getCurrentMaker() {
+		const round = this.rounds[this.rounds.length - 1];
+		const dealer = this.getCurrentDealer();
+		if (round?.bids.length && round.status === RoundStatus.Tricks) {
+			return (dealer + round.bids.length) % 4;
+		}
 	}
 
 	getCurrentPlayer() {
@@ -42,8 +50,8 @@ export class GameState implements Game {
 				// first trick
 				if (round.goingAlone) {
 					// player to left of caller starts
-					const caller = (dealer + round.bids.length) % 4;
-					return (caller + numCardsPlayed + (numCardsPlayed > 0 ? 2 : 1)) % 4;
+					const maker = (dealer + round.bids.length) % 4;
+					return (maker + numCardsPlayed + (numCardsPlayed > 0 ? 2 : 1)) % 4;
 				} else {
 					// player to left of dealer starts
 					return (dealer + 1 + numCardsPlayed) % 4;
@@ -52,8 +60,8 @@ export class GameState implements Game {
 				// winner of previous trick starts
 				const winner = round.tricks[round.tricks.length - 2].getWinner(round.trump!);
 				if (round.goingAlone) {
-					const caller = dealer + round.bids.length;
-					const inactivePlayer = (caller + 2) % 4;
+					const maker = dealer + round.bids.length;
+					const inactivePlayer = (maker + 2) % 4;
 					let nextPlayer = winner;
 					for (let i = 0; i < numCardsPlayed; i++) {
 						nextPlayer = (nextPlayer + 1) % 4;

@@ -15,18 +15,15 @@
 	const { game, playerIndex, position, dealer }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const action = $derived(game.getCurrentAction());
-
-	const hand = $derived((round?.hands?.[playerIndex] ?? []) as Hand);
+	const hand = $derived(round?.hands?.[playerIndex] ?? []);
 	const cards = $derived.by(() => {
-		const cardsInHand = [...hand]
-			.sort((a, b) => {
-				return getCardInHandScore(b.card) - getCardInHandScore(a.card);
-			})
-			.filter((cardInHand) => !cardInHand.isPlayed);
+		const cardsInHand = [...hand].filter((cardInHand) => !cardInHand.isPlayed);
 		if (action === Action.SwapCard && dealer === playerIndex && round.cardShowing) {
 			cardsInHand.push({ isPlayed: false, card: round.cardShowing });
 		}
-		return cardsInHand;
+		return cardsInHand.sort((a, b) => {
+			return getCardInHandScore(b.card, round?.trump) - getCardInHandScore(a.card, round?.trump);
+		});
 	});
 
 	const r = 'min(75vw, 75vh)';

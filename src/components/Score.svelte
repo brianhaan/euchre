@@ -6,20 +6,7 @@
 </script>
 
 <div class="scoreboard absolute left-4 top-4 p-4 text-xl">
-	<table>
-		<tbody>
-			<tr>
-				<th>{game.players[0].name ?? 'Player 1'} and {game.players[2].name ?? 'Player 3'}</th><td
-					>{score[0]}</td
-				>
-			</tr>
-			<tr
-				><th>{game.players[1].name ?? 'Player 2'} and {game.players[3].name ?? 'Player 4'}</th><td
-					>{score[1]}</td
-				></tr
-			></tbody
-		>
-	</table>
+	{score[0]} - {score[1]}
 </div>
 
 <style>

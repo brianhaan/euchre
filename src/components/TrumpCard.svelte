@@ -6,7 +6,7 @@
 </script>
 
 {#if suit}
-	<div class="absolute bottom-0 left-0 flex flex-col gap-2 p-4">
+	<div class="absolute right-0 top-0 flex flex-col gap-2 p-4">
 		<div
 			class="trump flex w-24 flex-col items-center justify-center rounded-lg border-2 border-black text-5xl shadow-xl"
 		>

@@ -1,6 +1,6 @@
 import type { Player } from '$lib/types/Player';
 
-type Position = 'bottom' | 'left' | 'top' | 'right';
+export type Position = 'bottom' | 'left' | 'top' | 'right';
 
 export const getPlayerPosition = (
 	playerId: Player['id'],

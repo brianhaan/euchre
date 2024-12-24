@@ -7,18 +7,9 @@
 	import TrumpCard from '../components/TrumpCard.svelte';
 
 	const game = new GameState();
-	const mainPlayer = 0; // your player ID or ID you are viewing as at bottom of screen
+	const mainPlayer = 1; // your player ID or ID you are viewing as at bottom of screen
 	const round = $derived(game.rounds[game.rounds.length - 1]);
-	// const trick = $derived(round?.tricks[round.tricks.length - 1]);
-	// const action = $derived(game.getCurrentAction());
-	// const currentPlayer = $derived(game.getCurrentPlayer());
-	// const dealer = $derived(game.getCurrentDealer());
-	// const trickWinners = $derived(round?.getTrickWinners());
-	// const score = $derived(game.getScore());
-
-	// TODO
-	// 2. show tricks in player panel
-	// 3. test other players as main player
+	const currentPlayer = $derived(game.getCurrentPlayer());
 </script>
 
 <Board {game} {mainPlayer} />
@@ -29,5 +20,5 @@
 	{/if}
 {/if}
 {#each game.players as player}
-	<PlayerPanel {game} {player} {mainPlayer} />
+	<PlayerPanel {game} {player} {mainPlayer} {currentPlayer} />
 {/each}

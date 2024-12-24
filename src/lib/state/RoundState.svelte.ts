@@ -49,9 +49,11 @@ export class RoundState implements Round {
 	swapCard(playerNumber: number, card: Card) {
 		const hand = this.hands?.[playerNumber];
 		if (hand && this.cardShowing) {
-			const cardToSwap = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
-			hand[cardToSwap].card.suit = this.cardShowing.suit;
-			hand[cardToSwap].card.value = this.cardShowing.value;
+			if (!areCardsEqual(card, this.cardShowing)) {
+				const cardToSwap = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
+				hand[cardToSwap].card.suit = this.cardShowing.suit;
+				hand[cardToSwap].card.value = this.cardShowing.value;
+			}
 		}
 		this.startTrick();
 	}
