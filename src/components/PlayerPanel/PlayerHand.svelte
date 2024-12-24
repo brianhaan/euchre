@@ -3,13 +3,15 @@
 	import { Action } from '$lib/types/Action';
 	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import { getCardInHandScore } from '$lib/utilities/getCardInHandScore';
+	import type { Position } from '$lib/utilities/getPlayerPosition';
+	import { getViewport, type Viewport } from '$lib/utilities/getViewport';
 	import Card from '../Card.svelte';
 
 	type Props = {
 		game: GameState;
 		playerIndex: number;
 		dealer: number;
-		position: 'bottom' | 'left' | 'top' | 'right';
+		position: Position;
 	};
 
 	const { game, playerIndex, position, dealer }: Props = $props();
@@ -26,14 +28,31 @@
 		});
 	});
 
-	const r = 'min(75vw, 75vh)';
-	const theta = 14;
-	const n = $derived(cards.length);
+	let viewport: Viewport = $state('base');
+	$effect(() => {
+		function setViewport() {
+			viewport = getViewport();
+		}
+		viewport = getViewport();
+		window.addEventListener('resize', setViewport);
+		return () => window.removeEventListener('resize', setViewport);
+	});
+
+	let n = $derived(cards.length);
+	let { r, theta, tx } = $derived.by(() => {
+		if (viewport === 'base') {
+			return { r: 'min(100vh, 100vw)', theta: 12, tx: 20 };
+		} else if (viewport === 'sm') {
+			return { r: 'min(85vh, 85vw)', theta: 13, tx: 32 };
+		}
+		return { r: 'min(75vh, 75vw)', theta: 14, tx: 40 };
+	});
+	$inspect(viewport);
 </script>
 
 <div
 	class="hand-container mx-auto w-full {position} relative z-20"
-	style="translate: -{(n - 1) * 45}%"
+	style="translate: -{(n - 1) * tx}%"
 >
 	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
 		{#each cards as cardInHand, i}
