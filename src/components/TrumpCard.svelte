@@ -8,7 +8,7 @@
 {#if suit}
 	<div class="absolute right-0 top-0 m-2 flex flex-col md:m-4">
 		<div
-			class="trump flex w-12 flex-col items-center justify-center rounded-lg border-2 border-black text-2xl shadow-xl sm:w-16 sm:text-3xl md:w-24 md:text-5xl"
+			class="trump flex w-12 flex-col items-center justify-center rounded-lg border-2 border-black text-xl shadow-xl sm:text-2xl md:w-16 md:text-3xl lg:w-20 lg:text-4xl"
 		>
 			{SuitEmoji[suit]}
 		</div>

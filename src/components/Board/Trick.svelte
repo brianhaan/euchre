@@ -48,7 +48,7 @@
 	}
 	.card-container {
 		width: min(12vh, 12vw);
-		bottom: max(-5vh, -5vw);
+		bottom: max(-4vh, -4vw);
 		@media screen and (min-width: 640px) and (min-height: 640px) {
 			width: min(10vh, 10vw);
 			bottom: max(-6vh, -6vw);
