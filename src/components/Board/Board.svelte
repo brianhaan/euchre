@@ -29,7 +29,15 @@
 <style>
 	.board {
 		border-color: rgba(255, 255, 255, 0.5);
-		width: min(30vh, 30vw);
-		height: min(30vh, 30vw);
+		width: min(50vh, 50vw);
+		height: min(50vh, 50vw);
+		@media screen and (min-width: 960px) and (min-height: 960px) {
+			width: min(40vh, 40vw);
+			height: min(40vh, 40vw);
+		}
+		@media screen and (min-width: 1280px) and (min-height: 1280px) {
+			width: min(30vh, 30vw);
+			height: min(30vh, 30vw);
+		}
 	}
 </style>
