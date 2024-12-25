@@ -4,6 +4,8 @@
 	import { getCardInHandScore } from '$lib/utilities/getCardInHandScore';
 	import type { Position } from '$lib/utilities/getPlayerPosition';
 	import { getViewport, type Viewport } from '$lib/utilities/getViewport';
+	import { isCardInSuit } from '$lib/utilities/isCardInSuit';
+	import { isLeftBower } from '$lib/utilities/isLeftBower';
 	import Card from '../Card.svelte';
 
 	type Props = {
@@ -65,7 +67,8 @@
 						<Card
 							card={cardInHand.card}
 							orientation="front"
-							variant={round.canCardBePlayed(playerIndex, cardInHand.card) ? 'default' : 'disabled'}
+							isDisabled={!round.canCardBePlayed(playerIndex, cardInHand.card)}
+							isTrump={isCardInSuit(cardInHand.card, round.trump, round.trump)}
 							onclick={canUseACard
 								? () => {
 										if (action === Action.SwapCard) {

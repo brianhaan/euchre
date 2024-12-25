@@ -12,15 +12,15 @@
 		game: GameState;
 		player: Player;
 		mainPlayer: Player['id'];
-		currentPlayer?: number;
 	};
 
-	const { game, player, mainPlayer, currentPlayer }: Props = $props();
+	const { game, player, mainPlayer }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const playerIndex = $derived(game.players.findIndex((p) => p.id === player.id));
-	const position = $derived(getPlayerPosition(player.id, game.players, mainPlayer));
+	const currentPlayer = $derived(game.getCurrentPlayer());
 	const maker = $derived(game.getCurrentMaker());
 	const dealer = $derived(game.getCurrentDealer());
+	const position = $derived(getPlayerPosition(player.id, game.players, mainPlayer));
 </script>
 
 {#if round && round.status !== RoundStatus.Complete}

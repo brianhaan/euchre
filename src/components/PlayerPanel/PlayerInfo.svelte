@@ -35,7 +35,7 @@
 							aria-label="Maker"
 							title="Maker"
 						>
-							⚪
+							🟡
 						</div>
 					{/if}
 					{#if dealer === playerIndex}

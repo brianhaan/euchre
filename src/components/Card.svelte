@@ -1,23 +1,29 @@
 <script lang="ts">
-	import { type Card, SuitEmoji, SuitName, ValueName, ValueSymbol, Value } from '$lib/types/Card';
+	import { type Card, SuitEmoji, SuitName, ValueName, ValueSymbol } from '$lib/types/Card';
 
-	type Variant = 'default' | 'disabled';
 	type Props = {
 		card: Card;
-		variant?: Variant;
+		isDisabled?: boolean;
+		isTrump?: boolean;
 		orientation?: 'front' | 'back';
 		onclick?: () => void;
 	};
 
-	const { card, variant = 'default', orientation = 'front', onclick }: Props = $props();
+	const {
+		card,
+		isDisabled = false,
+		isTrump = false,
+		orientation = 'front',
+		onclick
+	}: Props = $props();
 	const valueName = $derived(ValueName[card.value]);
 	const suitName = $derived(SuitName[card.suit]);
 	const label = $derived(`${valueName} of ${suitName}`);
 </script>
 
 <button
-	class="card {variant === 'disabled'
-		? 'disabled'
+	class="card {isDisabled ? 'disabled' : ''} {isTrump
+		? 'trump'
 		: ''} suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()} {typeof onclick ===
 	'undefined'
 		? 'no-click'
@@ -72,7 +78,12 @@
 		border-radius: 8cqw;
 		position: relative;
 		box-shadow: 2cqw 2cqw 4cqw rgba(0, 0, 0, 0.3);
-		border: 2px solid black;
+		border-width: 2cqw;
+		border-color: black;
+	}
+	.card.trump .wrapper {
+		border-width: 4cqw;
+		border-color: gold;
 	}
 
 	.corner {

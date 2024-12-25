@@ -9,7 +9,20 @@
 	const game = new GameState();
 	const mainPlayer = 0; // your player ID or ID you are viewing as at bottom of screen
 	const round = $derived(game.rounds[game.rounds.length - 1]);
-	const currentPlayer = $derived(game.getCurrentPlayer());
+
+	// TODO
+	// Double-click to play on mobile
+	// BUG - You can play unlimited cards between the time the round ends and the next round begins
+	// Animation - Card playing from hand to board
+	// Animation - Show CardShowing moving to player's hand
+	// Animation - Show CardShowing flipping over when pass 4 times
+	// Animation - Trump selected, moves to corner, move marker to maker
+	// Animation - End of trick, show winner card, move cards to PlayerTrick
+	// Animation - End of round, show winner and add to score
+	// Animation - End of game
+	// Don't allow game to continue when score reaches 10
+	// Animation - Start of round? Shuffle?
+	// Animation - Start of game? Show score and move to corner
 </script>
 
 <Board {game} {mainPlayer} />
@@ -20,5 +33,5 @@
 	{/if}
 {/if}
 {#each game.players as player}
-	<PlayerPanel {game} {player} {mainPlayer} {currentPlayer} />
+	<PlayerPanel {game} {player} {mainPlayer} />
 {/each}
