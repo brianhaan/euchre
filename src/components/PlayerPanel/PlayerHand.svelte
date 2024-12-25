@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
 	import { Action } from '$lib/types/Action';
-	import type { CardInHand, Hand } from '$lib/types/Hand';
 	import { getCardInHandScore } from '$lib/utilities/getCardInHandScore';
 	import type { Position } from '$lib/utilities/getPlayerPosition';
 	import { getViewport, type Viewport } from '$lib/utilities/getViewport';
@@ -10,11 +9,12 @@
 	type Props = {
 		game: GameState;
 		playerIndex: number;
+		currentPlayer?: number;
 		dealer: number;
 		position: Position;
 	};
 
-	const { game, playerIndex, position, dealer }: Props = $props();
+	const { game, playerIndex, currentPlayer, position, dealer }: Props = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const action = $derived(game.getCurrentAction());
 	const hand = $derived(round?.hands?.[playerIndex] ?? []);
@@ -27,6 +27,9 @@
 			return getCardInHandScore(b.card, round?.trump) - getCardInHandScore(a.card, round?.trump);
 		});
 	});
+	const canUseACard = $derived(
+		currentPlayer === playerIndex && (action === Action.SwapCard || action === Action.PlayCard)
+	);
 
 	let viewport: Viewport = $state('base');
 	$effect(() => {
@@ -47,10 +50,11 @@
 		}
 		return { r: 'min(75vh, 75vw)', theta: 14, tx: 40 };
 	});
+	$inspect(canUseACard);
 </script>
 
 <div
-	class="hand-container mx-auto w-full {position} relative z-20"
+	class="hand-container mx-auto w-full {position} {canUseACard ? 'playable' : ''} relative z-20"
 	style="translate: -{(n - 1) * tx}%"
 >
 	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
@@ -62,13 +66,15 @@
 							card={cardInHand.card}
 							orientation="front"
 							variant={round.canCardBePlayed(playerIndex, cardInHand.card) ? 'default' : 'disabled'}
-							onclick={() => {
-								if (action === Action.SwapCard) {
-									round.swapCard(playerIndex, cardInHand.card);
-								} else if (action === Action.PlayCard) {
-									round.playCard(playerIndex, cardInHand.card);
-								}
-							}}
+							onclick={canUseACard
+								? () => {
+										if (action === Action.SwapCard) {
+											round.swapCard(playerIndex, cardInHand.card);
+										} else if (action === Action.PlayCard) {
+											round.playCard(playerIndex, cardInHand.card);
+										}
+									}
+								: undefined}
 						/>
 					</div>
 				</div>
@@ -78,9 +84,11 @@
 </div>
 
 <style>
-	.card-rotator:hover {
-		scale: 1.07;
-		z-index: 200;
-		transition: all 0.1s;
+	.hand-container.bottom.playable {
+		.card-rotator:hover {
+			scale: 1.07;
+			z-index: 200;
+			transition: all 0.1s;
+		}
 	}
 </style>

@@ -35,7 +35,7 @@
 			<PlayerTricks {round} {playerIndex} {position} />
 			<CurrentPlayerIndicator {playerIndex} {currentPlayer} {position} />
 			<div class="hand-wrapper mx-auto h-full">
-				<PlayerHand {game} {position} {playerIndex} {dealer} />
+				<PlayerHand {game} {position} {playerIndex} {currentPlayer} {dealer} />
 			</div>
 		</div>
 	</div>

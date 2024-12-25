@@ -51,7 +51,7 @@
 		max-height: 100%;
 		color: black;
 		&.no-click {
-			cursor: normal;
+			cursor: default;
 		}
 
 		&.suit-diamonds,
