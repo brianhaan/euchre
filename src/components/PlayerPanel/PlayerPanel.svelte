@@ -31,10 +31,10 @@
 	>
 		<div class="player-panel absolute bottom-0 w-full">
 			<PlayerInfo {player} {playerIndex} {dealer} {maker} {position} {currentPlayer} />
+			<PlayerTricks {round} {playerIndex} {position} />
 			<div class="hand-wrapper mx-auto h-full">
 				<PlayerHand {game} {position} {playerIndex} {dealer} />
 			</div>
-			<PlayerTricks {round} {playerIndex} />
 		</div>
 	</div>
 {/if}

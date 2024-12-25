@@ -47,7 +47,6 @@
 		}
 		return { r: 'min(75vh, 75vw)', theta: 14, tx: 40 };
 	});
-	$inspect(viewport);
 </script>
 
 <div

@@ -31,7 +31,7 @@
 				>
 			{/each}
 			<label
-				class="mt-1 flex cursor-pointer select-none items-center gap-1 text-xs md:gap-2 md:text-lg lg:text-xl"
+				class="mt-1 flex cursor-pointer select-none items-center gap-1 text-xs sm:text-base md:gap-2 md:text-lg lg:text-xl"
 				for="going-alone"
 				><input
 					type="checkbox"

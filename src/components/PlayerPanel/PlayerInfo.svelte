@@ -15,7 +15,7 @@
 </script>
 
 <div
-	class="player-info-wrapper absolute -bottom-4 left-0 right-0 top-0 flex justify-end sm:-bottom-6 md:-bottom-8 lg:-bottom-10"
+	class="absolute -bottom-4 left-0 right-0 top-0 flex justify-end sm:-bottom-6 md:-bottom-8 lg:-bottom-10"
 >
 	<div class="player-info mx-auto flex justify-start {position}">
 		<div
