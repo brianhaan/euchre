@@ -17,4 +17,5 @@ export type Round = {
 	goingAlone: boolean;
 	hands?: [Hand, Hand, Hand, Hand];
 	tricks: TrickState[];
+	isAnimating: boolean;
 };

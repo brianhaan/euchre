@@ -16,6 +16,7 @@ export class RoundState implements Round {
 	goingAlone = $state(false);
 	hands = $state(undefined) as Round['hands'];
 	tricks = $state([]) as Round['tricks'];
+	isAnimating = $state(false);
 
 	constructor() {
 		const piles = deal(shuffle());
@@ -79,6 +80,7 @@ export class RoundState implements Round {
 	}
 
 	playCard(playerNumber: number, card: Card) {
+		if (this.isAnimating) return;
 		if (!this.canCardBePlayed(playerNumber, card)) {
 			throw new Error('Card cannot be played');
 		}
@@ -93,8 +95,10 @@ export class RoundState implements Round {
 
 			const numCardsPlayed = trick.getNumCardsPlayed();
 			if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
+				this.isAnimating = true;
 				setTimeout(() => {
 					this.finishTrick();
+					this.isAnimating = false;
 				}, 1000);
 			}
 		}
