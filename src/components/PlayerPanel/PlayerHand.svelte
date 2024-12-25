@@ -76,7 +76,7 @@
 							isTrump={isCardInSuit(cardInHand.card, round.trump, round.trump)}
 							onclick={canUseACard
 								? () => {
-										if (!cardQueued && (viewport === 'base' || viewport === 'sm')) {
+										if (!cardQueued && viewport === 'base') {
 											cardQueued = cardInHand.card;
 										} else if (cardQueued && !areCardsEqual(cardInHand.card, cardQueued)) {
 											cardQueued = cardInHand.card;

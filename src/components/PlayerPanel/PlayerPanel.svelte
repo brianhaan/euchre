@@ -4,6 +4,7 @@
 	import { RoundStatus } from '$lib/types/Round';
 	import { getPlayerPosition } from '$lib/utilities/getPlayerPosition';
 	import CurrentPlayerIndicator from './CurrentPlayerIndicator.svelte';
+	import InactiveHand from './InactiveHand.svelte';
 	import PlayerHand from './PlayerHand.svelte';
 	import PlayerInfo from './PlayerInfo.svelte';
 	import PlayerTricks from './PlayerTricks.svelte';
@@ -32,11 +33,15 @@
 	>
 		<div class="player-panel absolute bottom-0 w-full">
 			<PlayerInfo {player} {playerIndex} {dealer} {maker} {position} />
-			<PlayerTricks {round} {playerIndex} {position} />
-			<CurrentPlayerIndicator {playerIndex} {currentPlayer} {position} />
-			<div class="hand-wrapper mx-auto h-full">
-				<PlayerHand {game} {position} {playerIndex} {currentPlayer} {dealer} />
-			</div>
+			{#if round?.status === RoundStatus.Tricks && round.goingAlone && typeof maker !== 'undefined' && playerIndex === (maker + 2) % 4}
+				<InactiveHand {position} />
+			{:else}
+				<PlayerTricks {round} {playerIndex} {position} />
+				<CurrentPlayerIndicator {playerIndex} {currentPlayer} {position} />
+				<div class="hand-wrapper mx-auto h-full">
+					<PlayerHand {game} {position} {playerIndex} {currentPlayer} {dealer} />
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

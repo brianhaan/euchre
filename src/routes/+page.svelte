@@ -11,7 +11,6 @@
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 
 	// TODO
-	// Double-click to play on mobile
 	// Animation - Card playing from hand to board
 	// Animation - Show CardShowing moving to player's hand
 	// Animation - Show CardShowing flipping over when pass 4 times
@@ -23,7 +22,6 @@
 	// Animation - Start of round? Shuffle?
 	// Animation - Start of game? Show score and move to corner
 	// Animation - Change buttons when going alone
-	// More indicators when going alone that the partner isn't playing
 </script>
 
 <Board {game} {mainPlayer} />
