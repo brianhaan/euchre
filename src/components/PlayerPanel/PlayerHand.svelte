@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
 	import { Action } from '$lib/types/Action';
+	import type { Card as CardType } from '$lib/types/Card';
+	import { areCardsEqual } from '$lib/utilities/areCardsEqual';
 	import { getCardInHandScore } from '$lib/utilities/getCardInHandScore';
 	import type { Position } from '$lib/utilities/getPlayerPosition';
 	import { getViewport, type Viewport } from '$lib/utilities/getViewport';
 	import { isCardInSuit } from '$lib/utilities/isCardInSuit';
-	import { isLeftBower } from '$lib/utilities/isLeftBower';
 	import Card from '../Card.svelte';
 
 	type Props = {
@@ -32,6 +33,7 @@
 	const canUseACard = $derived(
 		currentPlayer === playerIndex && (action === Action.SwapCard || action === Action.PlayCard)
 	);
+	let cardQueued: CardType | undefined = $state();
 
 	let viewport: Viewport = $state('base');
 	$effect(() => {
@@ -61,7 +63,11 @@
 	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
 		{#each cards as cardInHand, i}
 			{#if !cardInHand.isPlayed}
-				<div class="card-rotator absolute z-30 w-full" style="rotate: {theta * i}deg; height: {r};">
+				<div
+					class="card-rotator absolute z-30 w-full {areCardsEqual(cardQueued, cardInHand.card) &&
+						'card-queued'}"
+					style="rotate: {theta * i}deg; height: {r};"
+				>
 					<div class="card-container">
 						<Card
 							card={cardInHand.card}
@@ -70,10 +76,17 @@
 							isTrump={isCardInSuit(cardInHand.card, round.trump, round.trump)}
 							onclick={canUseACard
 								? () => {
-										if (action === Action.SwapCard) {
-											round.swapCard(playerIndex, cardInHand.card);
-										} else if (action === Action.PlayCard) {
-											round.playCard(playerIndex, cardInHand.card);
+										if (!cardQueued && (viewport === 'base' || viewport === 'sm')) {
+											cardQueued = cardInHand.card;
+										} else if (cardQueued && !areCardsEqual(cardInHand.card, cardQueued)) {
+											cardQueued = cardInHand.card;
+										} else {
+											cardQueued = undefined;
+											if (action === Action.SwapCard) {
+												round.swapCard(playerIndex, cardInHand.card);
+											} else if (action === Action.PlayCard) {
+												round.playCard(playerIndex, cardInHand.card);
+											}
 										}
 									}
 								: undefined}
@@ -87,7 +100,8 @@
 
 <style>
 	.hand-container.bottom.playable {
-		.card-rotator:hover {
+		.card-rotator:hover,
+		.card-rotator.card-queued {
 			scale: 1.07;
 			z-index: 200;
 			transition: all 0.1s;

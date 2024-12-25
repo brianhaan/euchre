@@ -11,7 +11,6 @@
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 
 	// TODO
-	// BUG - You can play unlimited cards between the time the round ends and the next round begins
 	// Double-click to play on mobile
 	// Animation - Card playing from hand to board
 	// Animation - Show CardShowing moving to player's hand
