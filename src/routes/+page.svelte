@@ -11,7 +11,6 @@
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 
 	// TODO
-	// Change which player starts when going alone
 	// Don’t allow the original suit to be called in round 2
 	// BUG - You can play unlimited cards between the time the round ends and the next round begins
 	// Double-click to play on mobile

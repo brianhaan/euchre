@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { GameState } from '$lib/state/GameState.svelte';
 	import { Action } from '$lib/types/Action';
-	import { Suit, SuitEmoji } from '$lib/types/Card';
+	import { Suit, SuitEmoji, type CardSuit } from '$lib/types/Card';
+	import { RoundStatus } from '$lib/types/Round';
 	import Card from '../Card.svelte';
 
 	const { game }: { game: GameState } = $props();
@@ -9,6 +10,12 @@
 	const action = $derived(game.getCurrentAction());
 	const playerNumber = $derived(game.getCurrentPlayer());
 	let goingAlone = $state(false);
+	let cardShowingSuit: CardSuit = $state(Suit.Hearts);
+	$effect(() => {
+		if (round.status === RoundStatus.Bidding && round.cardShowing) {
+			cardShowingSuit = round.cardShowing.suit;
+		}
+	});
 </script>
 
 {#if action !== Action.SwapCard && action !== Action.PlayCard && action !== Action.Invalid}
@@ -26,7 +33,7 @@
 			{#each Object.entries(Suit) as [_, suit]}
 				<button
 					onclick={() => round.acceptBid(goingAlone, suit)}
-					disabled={round.cardShowing && round.cardShowing.suit !== suit}
+					disabled={round.cardShowing ? round.cardShowing.suit !== suit : suit === cardShowingSuit}
 					class="bg-white">{SuitEmoji[suit]}</button
 				>
 			{/each}
