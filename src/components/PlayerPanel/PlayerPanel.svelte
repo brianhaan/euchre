@@ -3,6 +3,7 @@
 	import type { Player } from '$lib/types/Player';
 	import { RoundStatus } from '$lib/types/Round';
 	import { getPlayerPosition } from '$lib/utilities/getPlayerPosition';
+	import CurrentPlayerIndicator from './CurrentPlayerIndicator.svelte';
 	import PlayerHand from './PlayerHand.svelte';
 	import PlayerInfo from './PlayerInfo.svelte';
 	import PlayerTricks from './PlayerTricks.svelte';
@@ -30,8 +31,9 @@
 			: ''}"
 	>
 		<div class="player-panel absolute bottom-0 w-full">
-			<PlayerInfo {player} {playerIndex} {dealer} {maker} {position} {currentPlayer} />
+			<PlayerInfo {player} {playerIndex} {dealer} {maker} {position} />
 			<PlayerTricks {round} {playerIndex} {position} />
+			<CurrentPlayerIndicator {playerIndex} {currentPlayer} {position} />
 			<div class="hand-wrapper mx-auto h-full">
 				<PlayerHand {game} {position} {playerIndex} {dealer} />
 			</div>

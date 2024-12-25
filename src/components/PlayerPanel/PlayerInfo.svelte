@@ -7,11 +7,10 @@
 		playerIndex: number;
 		dealer: number;
 		maker?: number;
-		currentPlayer?: number;
 		position: Position;
 	};
 
-	const { player, playerIndex, dealer, maker, currentPlayer, position }: Props = $props();
+	const { player, playerIndex, dealer, maker, position }: Props = $props();
 </script>
 
 <div
@@ -27,12 +26,6 @@
 				>
 					{player.name ?? `Player ${playerIndex + 1}`}
 				</div>
-				{#if playerIndex === currentPlayer}
-					<span
-						class="current-player absolute top-0 z-30 text-sm sm:text-lg md:text-2xl lg:text-4xl"
-						>➡️</span
-					>
-				{/if}
 			</div>
 			{#if dealer === playerIndex || maker === playerIndex}
 				<div class="buttons flex flex-row items-center text-5xl">
@@ -74,13 +67,6 @@
 	}
 
 	.top .player-name {
-		rotate: 180deg;
-	}
-	.current-player {
-		left: -48px;
-	}
-	.top .current-player {
-		right: -48px;
 		rotate: 180deg;
 	}
 
