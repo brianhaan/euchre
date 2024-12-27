@@ -11,8 +11,6 @@
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 
 	// TODO
-	// Animation - Card playing from hand to board
-	// Animation - Show CardShowing moving to player's hand
 	// Animation - Show CardShowing flipping over when pass 4 times
 	// Animation - Trump selected, moves to corner, move marker to maker
 	// Animation - End of trick, show winner card, move cards to PlayerTrick

@@ -18,7 +18,7 @@
 <button
 	class:disabled
 	class:trump
-	class:no-click={typeof onclick === undefined}
+	class:no-click={typeof onclick === 'undefined'}
 	class="card suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()}"
 	aria-label={label}
 	{onclick}

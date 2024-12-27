@@ -23,12 +23,11 @@
 	const hand = $derived(round?.hands?.[playerIndex] ?? []);
 	const cards = $derived.by(() => {
 		const cardsInHand = [...hand].filter((cardInHand) => !cardInHand.isPlayed);
-		if (action === Action.SwapCard && dealer === playerIndex && round.cardShowing) {
-			cardsInHand.push({ isPlayed: false, card: round.cardShowing });
-		}
-		return cardsInHand.sort((a, b) => {
-			return getCardInHandScore(b.card, round?.trump) - getCardInHandScore(a.card, round?.trump);
-		});
+		return round.trump
+			? cardsInHand.sort((a, b) => {
+					return getCardInHandScore(b.card, round.trump) - getCardInHandScore(a.card, round.trump);
+				})
+			: cardsInHand;
 	});
 	const canUseACard = $derived(
 		currentPlayer === playerIndex && (action === Action.SwapCard || action === Action.PlayCard)

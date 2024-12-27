@@ -1,4 +1,6 @@
+import { transition } from '$lib/animation/transition';
 import { type Card } from '$lib/types/Card';
+import type { Hand } from '$lib/types/Hand';
 import { RoundStatus, type Round } from '$lib/types/Round';
 import { areCardsEqual } from '$lib/utilities/areCardsEqual';
 import { deal } from '$lib/utilities/deal';
@@ -16,7 +18,9 @@ export class RoundState implements Round {
 	goingAlone = $state(false);
 	hands = $state(undefined) as Round['hands'];
 	tricks = $state([]) as Round['tricks'];
-	isAnimating = $state(false);
+	private isAnimating = false;
+	private trumpToSet: Round['trump'];
+	private cardWasShowing: Round['cardShowing'];
 
 	constructor() {
 		const piles = deal(shuffle());
@@ -31,29 +35,34 @@ export class RoundState implements Round {
 		}
 	}
 
-	acceptBid(goingAlone: Round['goingAlone'], trump?: Round['trump']) {
-		this.bids.push(true);
-		this.goingAlone = goingAlone;
-		if (this.bids.length > 4) {
-			this.trump = trump;
-			this.startTrick();
-		} else {
-			this.trump = this.cardShowing?.suit;
-			if (goingAlone && this.bids.length === 2) {
-				// Going Alone and partner is dealer - no swap necessary
+	acceptBid(goingAlone: Round['goingAlone'], dealer: number, trump?: Round['trump']) {
+		transition(() => {
+			this.bids.push(true);
+			this.goingAlone = goingAlone;
+			if (this.bids.length > 4) {
+				this.trumpToSet = trump;
 				this.startTrick();
+			} else {
+				this.trumpToSet = this.cardShowing?.suit;
+				this.cardWasShowing = this.cardShowing;
+				this.cardShowing = undefined;
+				const dealerHand = this.hands?.[dealer];
+				if (dealerHand) {
+					dealerHand.push({ isPlayed: false, card: this.cardWasShowing! });
+				}
+				if (goingAlone && this.bids.length === 2) {
+					// Going Alone and partner is dealer - no swap necessary
+					this.startTrick();
+				}
 			}
-		}
+		});
 	}
 
 	swapCard(playerNumber: number, card: Card) {
-		const hand = this.hands?.[playerNumber];
-		if (hand && this.cardShowing) {
-			if (!areCardsEqual(card, this.cardShowing)) {
-				const cardToSwap = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
-				hand[cardToSwap].card.suit = this.cardShowing.suit;
-				hand[cardToSwap].card.value = this.cardShowing.value;
-			}
+		if (this.hands?.[playerNumber] && this.cardWasShowing) {
+			this.hands[playerNumber] = this.hands[playerNumber].filter(
+				(handCard) => !areCardsEqual(handCard.card, card)
+			) as Hand;
 		}
 		this.startTrick();
 	}
@@ -84,24 +93,26 @@ export class RoundState implements Round {
 		if (!this.canCardBePlayed(playerNumber, card)) {
 			throw new Error('Card cannot be played');
 		}
+
 		const hand = this.hands?.[playerNumber];
 		const trick = this.tricks[this.tricks.length - 1];
-		if (hand && trick) {
-			const cardToPlay = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
-			if (typeof cardToPlay !== 'undefined') {
-				hand[cardToPlay].isPlayed = true;
-				trick.playCard(playerNumber, hand[cardToPlay].card, isLeftBower(card, this.trump!));
-			}
-
-			const numCardsPlayed = trick.getNumCardsPlayed();
-			if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
-				this.isAnimating = true;
-				setTimeout(() => {
+		transition(
+			() => {
+				if (hand && trick) {
+					const cardToPlay = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
+					if (typeof cardToPlay !== 'undefined') {
+						hand[cardToPlay].isPlayed = true;
+						trick.playCard(playerNumber, hand[cardToPlay].card, isLeftBower(card, this.trump!));
+					}
+				}
+			},
+			() => {
+				const numCardsPlayed = trick.getNumCardsPlayed();
+				if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
 					this.finishTrick();
-					this.isAnimating = false;
-				}, 1000);
+				}
 			}
-		}
+		);
 	}
 
 	getTrickWinners() {
@@ -119,14 +130,22 @@ export class RoundState implements Round {
 	}
 
 	private startTrick() {
-		this.cardShowing = undefined;
-		this.status = RoundStatus.Tricks;
-		this.tricks.push(new TrickState());
+		this.isAnimating = true;
+		setTimeout(() => {
+			this.trump = this.trumpToSet;
+			this.status = RoundStatus.Tricks;
+			this.tricks.push(new TrickState());
+			this.isAnimating = false;
+		}, 1000);
 	}
 
 	private finishTrick() {
 		if (this.tricks.length === 5) {
-			this.status = RoundStatus.Complete;
+			this.isAnimating = true;
+			setTimeout(() => {
+				this.status = RoundStatus.Complete;
+				this.isAnimating = false;
+			}, 1000);
 		} else {
 			this.startTrick();
 		}

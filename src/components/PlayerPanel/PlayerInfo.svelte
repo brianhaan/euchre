@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Player } from '$lib/types/Player';
 	import type { Position } from '$lib/utilities/getPlayerPosition';
+	import Indicator from '../Indicator.svelte';
 
 	type Props = {
 		player: Player;
@@ -30,16 +31,12 @@
 			{#if dealer === playerIndex || maker === playerIndex}
 				<div class="buttons flex flex-row items-center text-5xl">
 					{#if maker === playerIndex}
-						<div
-							class="indicator {dealer === playerIndex ? '-mr-5 sm:-mr-2 md:mr-2 lg:mr-4' : ''}"
-							aria-label="Maker"
-							title="Maker"
-						>
-							🟡
+						<div class={dealer === playerIndex ? '-mr-5 sm:-mr-2 md:mr-2 lg:mr-4' : ''}>
+							<Indicator variant="maker" />
 						</div>
 					{/if}
 					{#if dealer === playerIndex}
-						<div class="indicator" aria-label="Dealer" title="Dealer">🔵</div>
+						<Indicator variant="dealer" />
 					{/if}
 				</div>
 			{/if}
@@ -68,18 +65,5 @@
 
 	.top .player-name {
 		rotate: 180deg;
-	}
-
-	.indicator {
-		scale: 0.5;
-		@media screen and (min-width: 640px) and (min-height: 640px) {
-			scale: 0.7;
-		}
-		@media screen and (min-width: 960px) and (min-height: 960px) {
-			scale: 0.9;
-		}
-		@media screen and (min-width: 1280px) and (min-height: 1280px) {
-			scale: 1;
-		}
 	}
 </style>

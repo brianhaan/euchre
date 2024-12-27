@@ -8,6 +8,7 @@
 	const { game }: { game: GameState } = $props();
 	const round = $derived(game.rounds[game.rounds.length - 1]);
 	const action = $derived(game.getCurrentAction());
+	const dealer = $derived(game.getCurrentDealer());
 	const playerNumber = $derived(game.getCurrentPlayer());
 	let goingAlone = $state(false);
 	let cardShowingSuit: CardSuit = $state(Suit.Hearts);
@@ -32,7 +33,7 @@
 		<div class="flex flex-col justify-center gap-1 p-2 pb-0 md:gap-1.5 md:p-4 lg:gap-2">
 			{#each Object.entries(Suit) as [_, suit]}
 				<button
-					onclick={() => round.acceptBid(goingAlone, suit)}
+					onclick={() => round.acceptBid(goingAlone, dealer, suit)}
 					disabled={round.cardShowing ? round.cardShowing.suit !== suit : suit === cardShowingSuit}
 					class="bg-white">{SuitEmoji[suit]}</button
 				>
