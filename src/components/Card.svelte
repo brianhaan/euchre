@@ -3,33 +3,26 @@
 
 	type Props = {
 		card: Card;
-		isDisabled?: boolean;
-		isTrump?: boolean;
+		disabled?: boolean;
+		trump?: boolean;
 		orientation?: 'front' | 'back';
 		onclick?: () => void;
 	};
 
-	const {
-		card,
-		isDisabled = false,
-		isTrump = false,
-		orientation = 'front',
-		onclick
-	}: Props = $props();
+	const { card, disabled = false, trump = false, orientation = 'front', onclick }: Props = $props();
 	const valueName = $derived(ValueName[card.value]);
 	const suitName = $derived(SuitName[card.suit]);
 	const label = $derived(`${valueName} of ${suitName}`);
 </script>
 
 <button
-	class="card {isDisabled ? 'disabled' : ''} {isTrump
-		? 'trump'
-		: ''} suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()} {typeof onclick ===
-	'undefined'
-		? 'no-click'
-		: ''}"
+	class:disabled
+	class:trump
+	class:no-click={typeof onclick === undefined}
+	class="card suit-{suitName.toLowerCase()} value-{valueName.toLowerCase()}"
 	aria-label={label}
 	{onclick}
+	style:--card-name={`card-${card.suit}-${card.value}`}
 >
 	<div class="wrapper">
 		{#if orientation === 'front'}
@@ -50,6 +43,7 @@
 		line-height: 1;
 	}
 	.card {
+		view-transition-name: var(--card-name);
 		container-type: inline-size;
 		font-family: serif;
 		aspect-ratio: 9 / 14;
@@ -69,6 +63,10 @@
 				background: #cccccc;
 			}
 		}
+		&.trump .wrapper {
+			border-width: 4cqw;
+			border-color: gold;
+		}
 	}
 
 	.wrapper {
@@ -80,10 +78,6 @@
 		box-shadow: 2cqw 2cqw 4cqw rgba(0, 0, 0, 0.3);
 		border-width: 2cqw;
 		border-color: black;
-	}
-	.card.trump .wrapper {
-		border-width: 4cqw;
-		border-color: gold;
 	}
 
 	.corner {

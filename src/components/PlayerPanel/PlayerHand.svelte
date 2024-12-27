@@ -57,23 +57,25 @@
 </script>
 
 <div
-	class="hand-container mx-auto w-full {position} {canUseACard ? 'playable' : ''} relative z-20"
-	style="translate: -{(n - 1) * tx}%"
+	class:playable={canUseACard}
+	class="hand-container relative z-20 mx-auto w-full {position}"
+	style:--hand-translate={`${-(n - 1) * tx}%`}
 >
-	<div class="hand-rotator w-full" style="rotate: -{(theta * (n - 1)) / 2}deg;">
+	<div class="hand-rotator w-full" style:--hand-rotate={`${(-theta * (n - 1)) / 2}deg`}>
 		{#each cards as cardInHand, i}
 			{#if !cardInHand.isPlayed}
 				<div
-					class="card-rotator absolute z-30 w-full {areCardsEqual(cardQueued, cardInHand.card) &&
-						'card-queued'}"
-					style="rotate: {theta * i}deg; height: {r};"
+					class:card-queued={areCardsEqual(cardQueued, cardInHand.card)}
+					class="card-rotator absolute z-30 w-full"
+					style:--card-rotate={`${theta * i}deg`}
+					style:--card-height={r}
 				>
 					<div class="card-container">
 						<Card
 							card={cardInHand.card}
 							orientation="front"
-							isDisabled={!round.canCardBePlayed(playerIndex, cardInHand.card)}
-							isTrump={isCardInSuit(cardInHand.card, round.trump, round.trump)}
+							disabled={!round.canCardBePlayed(playerIndex, cardInHand.card)}
+							trump={isCardInSuit(cardInHand.card, round.trump, round.trump)}
 							onclick={canUseACard
 								? () => {
 										if (!cardQueued && viewport === 'base') {
@@ -99,6 +101,16 @@
 </div>
 
 <style>
+	.card-rotator {
+		rotate: var(--card-rotate);
+		height: var(--card-height);
+	}
+	.hand-rotator {
+		rotate: var(--hand-rotate);
+	}
+	.hand-container {
+		transform: translateX(var(--hand-translate));
+	}
 	.hand-container.bottom.playable {
 		.card-rotator:hover,
 		.card-rotator.card-queued {
