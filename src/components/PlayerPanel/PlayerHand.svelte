@@ -47,11 +47,11 @@
 	let n = $derived(cards.length);
 	let { r, theta, tx } = $derived.by(() => {
 		if (viewport === 'base') {
-			return { r: 'min(100vh, 100vw)', theta: 12, tx: 21 };
+			return { r: 'min(100dvh, 100vw)', theta: 12, tx: 21 };
 		} else if (viewport === 'sm') {
-			return { r: 'min(85vh, 85vw)', theta: 13, tx: 32 };
+			return { r: 'min(85dvh, 85vw)', theta: 13, tx: 32 };
 		}
-		return { r: 'min(75vh, 75vw)', theta: 14, tx: 40 };
+		return { r: 'min(75dvh, 75vw)', theta: 14, tx: 40 };
 	});
 </script>
 

@@ -1,5 +1,7 @@
-import { transition } from '$lib/animation/transition';
+import { withTimeout } from '$lib/animation/withTimeout';
+import { withTransition } from '$lib/animation/withTransition';
 import { type Card } from '$lib/types/Card';
+import type { RoundDeck } from '$lib/types/Deck';
 import type { Hand } from '$lib/types/Hand';
 import { RoundStatus, type Round } from '$lib/types/Round';
 import { areCardsEqual } from '$lib/utilities/areCardsEqual';
@@ -11,21 +13,59 @@ import { TrickState } from './TrickState.svelte';
 
 export class RoundState implements Round {
 	id = 0;
-	status = $state(RoundStatus.Bidding) as Round['status'];
+	status = $state(RoundStatus.Initializing) as Round['status'];
 	cardShowing = $state(undefined) as Round['cardShowing'];
 	bids = $state([]) as Round['bids'];
 	trump = $state(undefined) as Round['trump'];
 	goingAlone = $state(false);
 	hands = $state(undefined) as Round['hands'];
 	tricks = $state([]) as Round['tricks'];
+	deck = $state(undefined) as Round['deck'];
+
 	private isAnimating = false;
 	private trumpToSet: Round['trump'];
 	private cardWasShowing: Round['cardShowing'];
 
-	constructor() {
-		const piles = deal(shuffle());
-		this.hands = piles.slice(0, 4) as Round['hands'];
-		this.cardShowing = piles[4][0].card;
+	async deal(dealer: number) {
+		this.deck = shuffle().map((card) => ({
+			card,
+			isShuffled: false
+		}));
+
+		// "shuffle"
+		for (const cardInDeck of this.deck!) {
+			await withTimeout(100, () => {
+				cardInDeck.isShuffled = true;
+			});
+		}
+
+		// deal
+		await withTimeout(1500);
+		this.hands = [[], [], [], []];
+		let current = (dealer + 1) % 4;
+		const deal = (x: 2 | 3) => async () => {
+			const dealt = this.deck!.splice(0, x);
+			this.hands![current].push(
+				...dealt.map((cardInDeck) => ({
+					card: cardInDeck.card,
+					isPlayed: false
+				}))
+			);
+			current = (current + 1) % 4;
+		};
+		const deals = [deal(3), deal(3), deal(3), deal(3), deal(2), deal(2), deal(2), deal(2)];
+		for (const dealFn of deals) {
+			await withTransition(() => {
+				dealFn();
+			});
+		}
+
+		// flip card
+		await withTimeout(500);
+		this.status = RoundStatus.Bidding;
+		await withTimeout(500, () => {
+			this.cardShowing = this.deck![0].card;
+		});
 	}
 
 	passBid() {
@@ -36,7 +76,7 @@ export class RoundState implements Round {
 	}
 
 	acceptBid(goingAlone: Round['goingAlone'], dealer: number, trump?: Round['trump']) {
-		transition(() => {
+		withTransition(() => {
 			this.bids.push(true);
 			this.goingAlone = goingAlone;
 			if (this.bids.length > 4) {
@@ -96,23 +136,20 @@ export class RoundState implements Round {
 
 		const hand = this.hands?.[playerNumber];
 		const trick = this.tricks[this.tricks.length - 1];
-		transition(
-			() => {
-				if (hand && trick) {
-					const cardToPlay = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
-					if (typeof cardToPlay !== 'undefined') {
-						hand[cardToPlay].isPlayed = true;
-						trick.playCard(playerNumber, hand[cardToPlay].card, isLeftBower(card, this.trump!));
-					}
-				}
-			},
-			() => {
-				const numCardsPlayed = trick.getNumCardsPlayed();
-				if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
-					this.finishTrick();
+		withTransition(() => {
+			if (hand && trick) {
+				const cardToPlay = hand.findIndex((handCard) => areCardsEqual(handCard.card, card));
+				if (typeof cardToPlay !== 'undefined') {
+					hand[cardToPlay].isPlayed = true;
+					trick.playCard(playerNumber, hand[cardToPlay].card, isLeftBower(card, this.trump!));
 				}
 			}
-		);
+		}).then(() => {
+			const numCardsPlayed = trick.getNumCardsPlayed();
+			if (numCardsPlayed === 4 || (this.goingAlone && numCardsPlayed === 3)) {
+				this.finishTrick();
+			}
+		});
 	}
 
 	getTrickWinners() {
@@ -132,10 +169,12 @@ export class RoundState implements Round {
 	private startTrick() {
 		this.isAnimating = true;
 		setTimeout(() => {
-			this.trump = this.trumpToSet;
-			this.status = RoundStatus.Tricks;
-			this.tricks.push(new TrickState());
-			this.isAnimating = false;
+			withTransition(() => {
+				this.trump = this.trumpToSet;
+				this.status = RoundStatus.Tricks;
+				this.tricks.push(new TrickState());
+				this.isAnimating = false;
+			});
 		}, 1000);
 	}
 

@@ -33,14 +33,14 @@
 
 	.current-player {
 		animation: bounce 2s infinite ease-in-out;
-		width: min(50vh, 50vw);
+		width: min(50dvh, 50vw);
 		&.bottom {
-			width: min(85vh, 85vw);
+			width: min(85dvh, 85vw);
 			@media screen and (min-width: 640px) and (min-height: 640px) {
-				width: min(70vh, 70vw);
+				width: min(70dvh, 70vw);
 			}
 			@media screen and (min-width: 960px) and (min-height: 960px) {
-				width: min(73vh, 73vw);
+				width: min(73dvh, 73vw);
 			}
 		}
 	}

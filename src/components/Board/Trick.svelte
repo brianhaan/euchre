@@ -47,14 +47,14 @@
 		}
 	}
 	.card-container {
-		width: min(12vh, 12vw);
-		bottom: max(-4vh, -4vw);
+		width: min(12dvh, 12vw);
+		bottom: max(-4dvh, -4vw);
 		@media screen and (min-width: 640px) and (min-height: 640px) {
-			width: min(10vh, 10vw);
-			bottom: max(-6vh, -6vw);
+			width: min(10dvh, 10vw);
+			bottom: max(-6dvh, -6vw);
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
-			width: min(8vh, 8vw);
+			width: min(8dvh, 8vw);
 		}
 	}
 </style>

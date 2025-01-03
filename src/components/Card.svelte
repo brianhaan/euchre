@@ -24,7 +24,7 @@
 	{onclick}
 	style:--card-name={`card-${card.suit}-${card.value}`}
 >
-	<div class="wrapper">
+	<div class="wrapper" class:back={orientation === 'back'}>
 		{#if orientation === 'front'}
 			<div class="corner top">
 				<div class="value">{ValueSymbol[card.value]}</div>
@@ -45,6 +45,7 @@
 	.card {
 		view-transition-name: var(--card-name);
 		container-type: inline-size;
+		perspective: 1000px;
 		font-family: serif;
 		aspect-ratio: 9 / 14;
 		width: 100%;
@@ -75,9 +76,16 @@
 		background: var(--bg-card);
 		border-radius: 8cqw;
 		position: relative;
-		box-shadow: 2cqw 2cqw 4cqw rgba(0, 0, 0, 0.3);
 		border-width: 2cqw;
 		border-color: black;
+		transform-style: preserve-3d;
+		transition: transform 0.6s ease-in-out;
+		transform: rotateY(0deg);
+
+		&.back {
+			background: blue;
+			transform: rotateY(180deg);
+		}
 	}
 
 	.corner {

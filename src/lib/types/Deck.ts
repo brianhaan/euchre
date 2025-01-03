@@ -27,3 +27,8 @@ export const DECK: Card[] = [
 	{ suit: Suit.Clubs, value: Value.Ten },
 	{ suit: Suit.Clubs, value: Value.Nine }
 ] as const;
+
+export type RoundDeck = Array<{
+	card: Card;
+	isShuffled: boolean;
+}>;

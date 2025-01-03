@@ -53,43 +53,43 @@
 		}
 		&.left {
 			rotate: 90deg;
-			transform: translateY(calc((100vw - 100vh) / 2));
+			transform: translateY(calc((100vw - 100dvh) / 2));
 		}
 		&.right {
 			rotate: -90deg;
-			transform: translateY(calc((100vw - 100vh) / 2));
+			transform: translateY(calc((100vw - 100dvh) / 2));
 		}
 		&.bottom {
 			z-index: 10;
 		}
 	}
 	.player-panel {
-		height: min(20vh, 20vw);
+		height: min(20dvh, 20vw);
 	}
 
 	.hand-wrapper {
 		scale: 0.6;
-		transform: translateY(min(4vh, 4vw));
-		width: min(24vh, 24vw);
+		transform: translateY(min(4dvh, 4vw));
+		width: min(24dvh, 24vw);
 		@media screen and (min-width: 640px) and (min-height: 640px) {
 			scale: 0.8;
-			transform: translateY(min(8vh, 8vw));
-			width: min(14vh, 14vw);
+			transform: translateY(min(8dvh, 8vw));
+			width: min(14dvh, 14vw);
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
-			transform: translateY(min(10vh, 10vw));
-			width: min(10vh, 10vw);
+			transform: translateY(min(10dvh, 10vw));
+			width: min(10dvh, 10vw);
 		}
 	}
 	.bottom .hand-wrapper {
 		scale: 1.2;
-		transform: translateY(max(-3vh, -3vw));
+		transform: translateY(max(-3dvh, -3vw));
 		@media screen and (min-width: 640px) and (min-height: 640px) {
-			transform: translateY(min(5vh, 5vw));
+			transform: translateY(min(5dvh, 5vw));
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
 			scale: 1.3;
-			transform: translateY(min(8vh, 8vw));
+			transform: translateY(min(8dvh, 8vw));
 		}
 	}
 </style>

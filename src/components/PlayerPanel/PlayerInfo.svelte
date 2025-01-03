@@ -46,19 +46,19 @@
 
 <style>
 	.player-info {
-		width: min(65vh, 65vw);
+		width: min(65dvh, 65vw);
 		&.bottom {
-			width: min(100vh, 100vw);
+			width: min(100dvh, 100vw);
 		}
 		@media screen and (min-width: 640px) and (min-height: 640px) {
 			&.bottom {
-				width: min(85vh, 85vw);
+				width: min(85dvh, 85vw);
 			}
 		}
 		@media screen and (min-width: 960px) and (min-height: 960px) {
-			width: min(60vh, 60vw);
+			width: min(60dvh, 60vw);
 			&.bottom {
-				width: min(80vh, 80vw);
+				width: min(80dvh, 80vw);
 			}
 		}
 	}

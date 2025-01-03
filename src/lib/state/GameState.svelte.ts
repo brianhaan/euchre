@@ -1,5 +1,7 @@
+import { withTimeout } from '$lib/animation/withTimeout';
+import { withTransition } from '$lib/animation/withTransition';
 import { Action } from '$lib/types/Action';
-import type { Game } from '$lib/types/Game';
+import { GameStatus, type Game } from '$lib/types/Game';
 import { RoundStatus } from '$lib/types/Round';
 import { RoundState } from './RoundState.svelte';
 
@@ -8,15 +10,25 @@ export class GameState implements Game {
 	scoreToWin = 10;
 	players = $state([
 		{ id: 0, name: 'Alice' },
-		{ id: 1, name: 'Bobby-Jones the Great' },
+		{ id: 1, name: 'Bobby' },
 		{ id: 2, name: 'Charles' },
 		{ id: 3 }
 	] as Game['players']);
 	initialDealer = Math.floor(Math.random() * 4);
 	rounds = $state([]) as RoundState[];
+	status = $state(GameStatus.Initializing);
 
-	startNewRound() {
-		this.rounds.push(new RoundState());
+	async startNewRound() {
+		const round = new RoundState();
+		this.rounds.push(round);
+		if (this.rounds.length === 1) {
+			await withTimeout(2000);
+			await withTransition(() => {
+				this.status = GameStatus.Active;
+			});
+			await withTimeout(1000);
+		}
+		round.deal(this.getCurrentDealer());
 	}
 
 	getCurrentDealer() {
@@ -111,6 +123,9 @@ export class GameState implements Game {
 				}
 			}
 		});
+		if (teams[0] > this.scoreToWin || teams[1] > this.scoreToWin) {
+			this.status = GameStatus.Complete;
+		}
 		return teams;
 	}
 }
